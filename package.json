@@ -1,0 +1,22 @@
+{
+  "name": "hellosign",
+  "version": "1.0.0",
+  "description": "HelloSign demo platform for finsweet",
+  "main": "main.js",
+  "author": "irwynks",
+  "dependencies": {
+    "async": "^2.4.1",
+    "body-parser": "^1.17.2",
+    "color-thief": "*",
+    "express": "^4.15.3",
+    "express-handlebars": "^3.0.0",
+    "hellosign-sdk": "^1.1.13",
+    "moment": "^2.18.1",
+    "mongoose": "^4.10.5",
+    "multer": "^1.3.0",
+    "tinycolor2": "^1.4.1",
+    "underscore": "^1.8.3",
+    "request":"*",
+    "wcag-contrast":"*"
+  }
+}

@@ -1,0 +1,304 @@
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+<link rel="stylesheet" href="css/prettybox.css" />
+
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.css">
+
+<link rel="stylesheet" href="css/index.css" />
+<title>HelloSign API Demo</title>
+
+<div class="row" id="header">
+    <h3>Welcome to the HelloSign Demo</h3>
+    <h4>Fill out to create a custom demo</h4>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="start-form-wrapper col-sm-8 col-sm-offset-2">
+            <form id="startForm" action="/submit" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="company" id="company" placeholder="Opportunity Name">
+                </div>
+                <div class="form-group" style="padding-left:10px;">
+                    <label>What use case would you like to highlight?</label>
+                    <div class="checkbox">
+                        <label for="hr" style="width:48%;display:inline-block;">
+                            <input type="checkbox" class="form-control" name="usage" id="hr" value="hr">
+                            <i></i> <span>HR</span>
+                        </label>
+                        <label for="legal" style="width:48%;display:inline-block;">
+                            <input type="checkbox" class="form-control" name="usage" id="legal" value="legal">
+                            <i></i> <span>Legal</span>
+                        </label>
+                        <label for="realestate" style="width:48%;display:inline-block;">
+                            <input type="checkbox" class="form-control" name="usage" id="realestate" value="realestate">
+                            <i></i> <span>Real Estate</span>
+                        </label>
+                        <label for="other" style="width:48%;display:inline-block;display:none">
+                            <input type="checkbox" class="form-control" name="usage" id="other" value="other">
+                            <i></i> <span>Other</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group" style="display:none">
+                    <input type="text" class="form-control" name="firstname" id="firstname" placeholder="First Name" style="display:inline-block;width:48%">
+                    <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Last Name" style="display:inline-block;width:50%;position:relative;left:1%">
+                </div>
+                <div class="form-group" style="display:none">
+                    <input type="text" class="form-control" name="position" id="position" placeholder="Job Position">
+                </div>
+                <div class="form-group" style="display:none">
+                    <input type="text" class="form-control" name="email" id="email" placeholder="Email Address">
+                </div>
+                <div class="form-group">
+                    <div class='dropzone' id="logo"></div>
+                </div>
+                <div class="form-group" style="display:none">
+                    <label for="primaryManual">Primary Company Color (optional)</label>
+                    <input type="text" class="form-control" name="primaryManual" id="primaryManual" placeholder="Hex Color" style="display:inline-block;width:200px;position:relative;right:0;">
+                </div>
+                <div class="form-group" style="display:none">
+                    <label for="primaryManual">Dark Company Color (optional)</label>
+                    <input type="text" class="form-control" name="darkManual" id="darkManual" placeholder="Hex Color" style="display:inline-block;width:200px;position:relative;right:0;">
+                </div>
+
+                <!--
+                <div class="form-group ccontrol">
+                    <input type="text" class="form-control" id="headerbgcolor" placeholder="Header Background Color">
+                    <label for="headerbgcolor">Header Background Color</label>
+                </div>
+                <div class="form-group ccontrol">
+                    <input type="text" class="form-control" id="textcolor" placeholder="Text Color On Header">
+                    <label for="textcolor">Text Color On Header</label>
+                </div>
+                <div class="form-group ccontrol">
+                    <input type="text" class="form-control" id="buttoncolor" placeholder="Button Color">
+                    <label for="buttoncolor">Button Color</label>
+                </div>
+                <div class="form-group ccontrol">
+                    <input type="text" class="form-control" id="linkcolor" placeholder="Highlight/Link Color">
+                    <label for="linkcolor">Highlight/Link Color</label>
+                </div>
+                -->
+                <button id="proceed" type="submit" class="btn btn-default">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row" id="footer">
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.js"></script>
+
+<!--
+<script>
+    $("#headerbgcolor").spectrum({
+        preferredFormat: "hex",
+        showInput: true,
+        color: "#FFF"
+    });
+    $("#textcolor").spectrum({
+        preferredFormat: "hex",
+        showInput: true,
+        color: "#000"
+    });
+    $("#buttoncolor").spectrum({
+        preferredFormat: "hex",
+        showInput: true,
+        color: "#999"
+    });
+    $("#linkcolor").spectrum({
+        preferredFormat: "hex",
+        showInput: true,
+        color: "#47f"
+    });
+</script>
+-->
+
+<script>
+    Dropzone.autoDiscover = false;
+
+    companyurl = '';
+
+    $(document).ready(function(){
+        var myDropzone = new Dropzone(".dropzone", {
+            url: '/submit',
+            autoProcessQueue: false,
+            maxFiles: 1,
+            acceptedFiles: 'image/*',
+            addRemoveLinks: true,
+            paramName:'logo',
+            dictDefaultMessage:'Drop in company logo (optional)',
+            thumbnailWidth:null,
+            init: function() {
+            }}
+        );
+
+        $("#proceed").click(function(e) {
+            console.log('Submitting..');
+            e.preventDefault();
+            e.stopPropagation();
+
+            if(!myDropzone.files.length){
+
+                var formData = $('#startForm').serializeArray();
+
+                var data = {};
+                for (var i = 0; i < formData.length; i++){
+                    if(formData[i]['name']=='usage'){
+                        if(typeof data.usage == 'undefined')
+                            data.usage = [];
+                        data.usage.push(formData[i]['value'])
+                    }else{
+                        data[formData[i]['name']] = formData[i]['value'];
+                    }
+                }
+
+                data.logo = null;
+                data.colorPrimaryManual = null;
+                data.colorDarkManual = null;
+                if(!data.usage)
+                    data.usage = [];
+
+                console.log(data);
+
+                var proceed = true;
+
+                if($('.checkbox input:checked').length == 0)
+                    proceed=false;
+                if($('#company').val().trim()=='')
+                    proceed=false;
+
+                if(proceed){
+                    $.ajax({
+                        type:'POST',
+                        url:'/submit',
+                        data:formData,
+                        success: function(response){
+                            console.log(response);
+                            if(response.status=='exists'){
+                                swal({
+                                            title: "Uh oh!",
+                                            text: "Looks like you have already created a demo account.",
+                                            type: "warning",
+                                            timer: 2000,
+                                            showConfirmButton:false
+                                        },
+                                        function(isConfirm){
+                                            setTimeout(function(){
+                                                window.location.replace('/'+response.link+'/welcome')
+                                            },300)
+                                        });
+                            }else{
+                                swal({
+                                            title: "Great!",
+                                            text: "Lets get you started.",
+                                            type: "success",
+                                            timer: 2000,
+                                            showConfirmButton:false
+                                        },
+                                        function(){
+                                            setTimeout(function(){
+                                                window.location.replace('/'+response.link+'/welcome')
+                                            },300)
+                                        });
+                            }
+                        }
+                    });
+                }else{
+                    swal({
+                        title: "Uh oh!",
+                        text: "Please fill in opportunity name and select at least one use case.",
+                        type: "warning",
+                        showConfirmButton:true
+                    });
+                }
+
+            }else {
+
+                var proceed = true;
+
+                if ($('.checkbox input:checked').length == 0)
+                    proceed = false;
+                if ($('#company').val().trim() == '')
+                    proceed = false;
+
+                if (proceed) {
+                    myDropzone.processQueue();
+                }else{
+                    swal({
+                        title: "Uh oh!",
+                        text: "Please fill in opportunity name and select at least one use case.",
+                        type: "warning",
+                        showConfirmButton:true
+                    });
+                }
+            }
+
+        });
+
+        //send all the form data along with the files:
+        myDropzone.on("sending", function(data, xhr, formData) {
+            formData.append("company", $("#company").val());
+
+            companyurl = encodeURI($("#company").val()).replace(/%20/g,'-').replace('.','').toLowerCase();
+
+            formData.append("firstname", $("#firstname").val());
+            formData.append("lastname", $("#lastname").val());
+            formData.append("position", $("#position").val());
+            formData.append("email", $("#email").val());
+            formData.append("colorPrimaryManual", $("#primaryManual").val());
+            formData.append("colorDarkManual", $("#darkManual").val());
+            //formData.append("headerbgcolor", $('#headerbgcolor').spectrum('get').toHexString());
+            //formData.append("textcolor", $('#textcolor').spectrum('get').toHexString());
+            //formData.append("buttoncolor", $('#buttoncolor').spectrum('get').toHexString());
+            //formData.append("linkcolor", $('#linkcolor').spectrum('get').toHexString());
+            $('input:checkbox:checked').map(function() {
+                formData.append("usage", this.value);
+            });
+        });
+
+        myDropzone.on('success', function(a,b){
+
+            var response = JSON.parse(a.xhr.response);
+
+            console.log(response);
+
+            console.log(response.link);
+            console.log(response.status);
+
+            if(response.status=='exists')
+            {
+                swal({
+                            title: "Uh oh!",
+                            text: "Looks like you have already created a demo account.",
+                            type: "warning",
+                            timer: 2000,
+                            showConfirmButton:false
+                        },
+                        function(isConfirm){
+                            setTimeout(function(){
+                                window.location.replace('/'+response.link+'/welcome')
+                            },300)
+                        });
+            }else{
+                swal({
+                            title: "Great!",
+                            text: "Lets get you started.",
+                            type: "success",
+                            timer: 2000,
+                            showConfirmButton:false
+                        },
+                        function(){
+                            setTimeout(function(){
+                                window.location.replace('/'+response.link+'/welcome')
+                            },300)
+                        });
+            }
+        })
+
+
+    });
+
+</script>

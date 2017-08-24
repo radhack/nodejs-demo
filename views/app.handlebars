@@ -1,0 +1,1862 @@
+<link rel="stylesheet" href="/css/prettybox.css" />
+<link rel="stylesheet" href="/css/index.css" />
+<link rel="stylesheet" href="/css/app.css" />
+<link rel="stylesheet" href="/css/temporary.css" />
+
+
+<script type="text/javascript" src="https://s3.amazonaws.com/cdn.hellosign.com/public/js/hellosign-embedded.LATEST.min.js"></script>
+<script>
+    HelloSign.init("{{profile.client_id}}");
+
+    $(document).ready(function(){
+
+        $('.need-help').click(function(){
+
+            $('.need-help-dropdown').toggleClass('hidden-dropdown');
+
+            var icon = $(this).find('i');
+
+            if(icon.hasClass('fa-chevron-circle-right')){
+                icon.removeClass('fa-chevron-circle-right');
+                icon.addClass('fa-chevron-circle-down');
+            }else{
+                icon.removeClass('fa-chevron-circle-down');
+                icon.addClass('fa-chevron-circle-right  ');
+            }
+        })
+    })
+
+</script>
+
+<style>
+    .app-sidebar, .sidebar-logo, .sidebar-menu{
+        background: white !important;
+    }
+
+    .sidebar-copyright a{
+        color: {{profile.primaryColor}} !important;
+    }
+
+    .sidebar-copyright a:hover{
+        color: {{sidebarLinkColor}} !important;
+    }
+
+    .app-header{
+        background: {{profile.primaryColor}} !important;
+    }
+
+    .app-body {
+        background: #f6f6f6 !important;
+    }
+    /*
+        .app-body{
+            background: {{profile.contentBackground}} !important;
+    }
+*/
+
+    .btn{
+        background: {{profile.primaryColor}} !important;
+        color: white;
+    }
+    .form-control:focus {
+        border-color: {{profile.primaryColor}} !important;
+    }
+    .dropzone:hover{
+        border-color: {{profile.primaryColor}} !important;
+    }
+    .modal-content input:focus, .modal-content textarea:focus {
+        border-color: {{profile.primaryColor}} !important;
+    }
+    .addRole:hover {
+        border:dashed 2px {{profile.primaryColor}} !important;
+    }
+    .checkbox label i {
+        color: {{profile.primaryColor}} !important;
+    }
+
+
+    .whitelabel-primary-button {
+        background-color: {{profile.primaryColor}} !important;
+    }
+
+</style>
+
+<div class="row app-container">
+    <div class="app-sidebar">
+
+        <div class="sidebar-logo">
+            <div class="logo-container">
+                <img src="/{{profile.logo}}" />
+            </div>
+        </div>
+
+        <div class="sidebar-menu">
+            <ul class="menu1">
+                <li class="{{#if welcome}}active{{/if}} sidebar-title">
+                    <a class="menu-btn" href="/{{profile.url}}/welcome">WELCOME</a>
+                </li>
+            </ul>
+            <br/>
+            <ul class="menu1">
+                <li>
+                    <div class="menu-btn sidebar-title">API USAGE EXAMPLES</div>
+                </li>
+            </ul>
+            <ul class="menu2">
+                <li class="menu2-section">
+                    <a class="menu-btn sidebar-title" href="/{{profile.url}}/one-off">
+                        Embedded Requesting
+                    </a>
+                    <ul class="menu3">
+                        <li class="{{#if one-off}}active{{/if}} sidebar-li"><a class="menu-btn sidebar-link" href="/{{profile.url}}/one-off">One-Off Document</a></li>
+                        <li class="{{#if from-template}}active{{/if}} sidebar-li"><a class="menu-btn sidebar-link" href="/{{profile.url}}/from-template">From Template</a></li>
+                        <li class="{{#if status}}active{{/if}} sidebar-li"><a class="menu-btn sidebar-link" href="/{{profile.url}}/status">Status of Requests</a></li>
+                    </ul>
+                </li>
+                <li class="menu2-section">
+                    <div class="menu-btn sidebar-title">Merge Fields</div>
+                    <ul class="menu3">
+                        <li class="{{#if merge-fields}}active{{/if}} sidebar-li"><a class="menu-btn sidebar-link" href="/{{profile.url}}/merge-fields">Merge Fields</a></li>
+                    </ul>
+                </li>
+                <li class="menu2-section">
+                    <div class="menu-btn sidebar-title">Embedded Signing</div>
+                    <ul class="menu3">
+                        <li class="{{#if embedded-signing}}active{{/if}} sidebar-li"><a class="menu-btn sidebar-link" href="/{{profile.url}}/embedded-signing">Embedded Signing</a></li>
+                        <li class="{{#if signer-reassignment}}active{{/if}} sidebar-li"><a class="menu-btn sidebar-link" href="/{{profile.url}}/signer-reassignment">Signer Reassignment</a></li>
+                    </ul>
+                </li>
+                <li class="menu2-section">
+                    <a class="menu-btn sidebar-title" href="/{{profile.url}}/embedded-templates">Embedded Templates</a>
+                    <ul class="menu3">
+                        <li class="{{#if embedded-templates}}active{{/if}} sidebar-li"><a class="menu-btn sidebar-link" href="/{{profile.url}}/embedded-templates">Embedded Templates</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
+
+        <div class="sidebar-copyright">
+            <a href="https://www.hellosign.com" target="_blank">© 2017 HelloSign Demo Dashboard</a>
+        </div>
+
+    </div>
+    <div class="app-main">
+        <div class="row app-header">
+            {{#if welcome}}
+                <div class="text-container">
+                    <div class="maintext">Welcome {{profile.company}}.</div>
+                </div>
+            {{/if}}
+
+            {{#if embedded-templates}}
+                <div class="text-container">
+                    <div>
+                        <div class="maintext">Embedded Templates</div>
+                        <div class="subtext">Embedded Templates</div>
+                    </div>
+                </div>
+            {{/if}}
+
+            {{#if one-off}}
+                <div class="text-container">
+                    <div>
+                        <div class="maintext">Embedded Requesting</div>
+                        <div class="subtext">One-off Document</div>
+                    </div>
+                </div>
+            {{/if}}
+
+            {{#if from-template}}
+                <div class="text-container">
+                    <div>
+                        <div class="maintext">Embedded Requesting</div>
+                        <div class="subtext">From Template</div>
+                    </div>
+                </div>
+            {{/if}}
+
+            {{#if status}}
+                <div class="text-container">
+                    <div>
+                        <div class="maintext">Embedded Requesting</div>
+                        <div class="subtext">Status of Requests</div>
+                    </div>
+                </div>
+            {{/if}}
+
+            {{#if embedded-signing}}
+                <div class="text-container">
+                    <div>
+                        <div class="maintext">Embedded Signing</div>
+                        <div class="subtext">Embedded Signing</div>
+                    </div>
+                </div>
+            {{/if}}
+
+            {{#if signer-reassignment}}
+                <div class="text-container">
+                    <div>
+                        <div class="maintext">Embedded Signing</div>
+                        <div class="subtext">Signer Reassignment</div>
+                    </div>
+                </div>
+            {{/if}}
+
+            {{#if merge-fields}}
+                <div class="text-container">
+                    <div>
+                        <div class="maintext">Merge Fields</div>
+                        <div class="subtext">Merge Fields</div>
+                    </div>
+                </div>
+            {{/if}}
+
+            <div class="need-help">Need Help?
+                <i class="fa fa-chevron-circle-right" aria-hidden="true" style="font-size:12px;margin-left:2px;"></i>
+            </div>
+            <div class="need-help-dropdown hidden-dropdown">
+                <div>Hey {{profile.company}}.</div>
+                <div>Need help? Have questions for us?</div>
+                <div>Email us at <a href="mailto:sales@hellosign.com">sales@hellosign.com</a></div>
+            </div>
+            <a class="header-more-info-button">{{profile.headerMoreInfo}}</a>
+        </div>
+
+        <div class="row app-body">
+            {{#if welcome}}
+                <div class="col-sm-8 container">
+                    <!--<p class="main-text">
+                        This is an example of what your dashboard can look like with our white label functionality in our API. Your developers can customize your dashboard in any way you'd like.
+                        <br/><br/>
+                        Click through the links under API Example in the left sidebar to demo our most popular HelloSign API features.
+                    </p>-->
+                    <p class="main-text">
+                        Use the navigation on the left to explore the possibilities of the HelloSign API.
+                    </p>
+                    <br/>
+                    <div class="btn btn-default pull-left cta" onclick="next()">Get Started</div>
+                </div>
+
+                <div class="modal fade" id="whitelabelingModal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <div class="body row">
+                                    <br/>
+                                    <div class="col-sm-10 col-sm-offset-1">
+                                        <h3>Whitelabeling</h3>
+                                        <br/>
+                                        <p>
+                                            HelloSign lets YOUR brand shine through. Take a quick look around---notice the colors and branding? This is our white labeling in action. We allow our API users to customize with their branding, colors, and logos, giving you and your signers/users a seamless experience.
+                                        </p>
+                                        <br/>
+                                        <p>
+                                            HelloSign is the only eSignature provider offering this level of flexibility in customization.
+                                        </p>
+                                        <br/>
+                                        <br/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    $('#whitelabelingModal').modal({show:false, backdrop:false});
+
+                    function next(){
+                        $('#whitelabelingModal').modal().show();
+
+                        $('#whitelabelingModal').modal().on('hidden.bs.modal', function(){
+                            window.location.href = '/{{profile.url}}/one-off';
+                        });
+                    }
+                </script>
+            {{/if}}
+
+            {{#if embedded-templates}}
+
+                <div class="step1 {{#if profile.custom}}hidden{{else}}{{/if}} col-sm-12">
+                    <p style="margin-top:50px;margin-left:40px;font-weight:bold;font-size:14px;">
+                        Embedded templates empower users to create and save document templates for repeated use on your website, application, or workflow.
+                        <br/>
+                        <br/>
+                        Let's walk through creating a template
+                    </p>
+                    <br/>
+                    <div class="col-sm-6" style="margin-left:0;">
+                        <form id="embeddedTemplateForm" style="padding-left:25px;" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="name">Name the template</label>
+                                <input type="text" class="form-control" name="name" id="name" placeholder="Template Name">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="template">Upload a document file</label>
+                                <div class='dropzone' id="template"></div>
+                            </div>
+                            <div style="font-weight:bold;font-size:12px;">
+                                Or leave it blank to use a sample HR document
+                            </div>
+                            <br/>
+                            <div class="form-group">
+                                <label>Add the roles that need to sign</label>
+                                <br/>
+                                <label class="small-label">Who needs to sign?</label>
+                                <input type="text" class="form-control roles" placeholder="Signing Role (Manager, Client, etc.)">
+                                <div class="addRole">
+                                <span class="icon">
+                                    <span class="fa-stack">
+                                      <i class="fa fa-plus fa-stack-1x"></i>
+                                      <i class="fa fa-circle-thin fa-stack-2x"></i>
+                                    </span>
+                                </span>
+                                    <span class="text">Add Role</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Add a message</label>
+                                <input type="text" class="form-control" name="subject" id="subject" placeholder="Email subject for template"/>
+                                <textarea class="form-control" style="margin-top:20px;" rows="5" name="body" id="body" placeholder="Email body message for template"></textarea>
+                            </div>
+
+                            <button id="proceed" type="submit" class="btn btn-default pull-left">Submit</button>
+                        </form>
+                    </div>
+                    <script>
+                        Dropzone.autoDiscover = false;
+
+                        form = $('#embeddedTemplateForm');
+
+                        $('.addRole').click(function(){
+                            $('<div style="position:relative;"><input type="text" class="form-control roles" style="margin-top:10px;" placeholder="Signing Role (Manager, Client, etc.)"><div class="removeRole"><i class="fa fa-times"></i></div></div>').insertBefore($(this));
+                            $('.removeRole').click(function(){
+                                console.log('clicked');
+                                $(this).parent().remove();
+                            });
+                        });
+
+                        $('.removeRole').click(function(){
+                            console.log('clicked');
+                            $(this).parent().remove();
+                        });
+
+                        $(document).ready(function(){
+                            var myDropzone = new Dropzone(".dropzone", {
+                                url: '/embeddedTemplates',
+                                autoProcessQueue: false,
+                                addRemoveLinks: true,
+                                paramName:'file',
+                                dictDefaultMessage:'Upload document',
+                                thumbnailWidth:null,
+                                init: function() {
+                                }}
+                            );
+
+                            $("#proceed").click(function(e) {
+
+                                console.log('Submitting..');
+                                e.preventDefault();
+                                e.stopPropagation();
+
+                                if(!myDropzone.files.length){
+
+                                    var data = {};
+
+                                    data.name = form.find('#name').val().trim();
+                                    data.subject = form.find('#subject').val().trim();
+                                    data.message = form.find('#body').val().trim();
+
+                                    data.roles = [];
+                                    form.find('.roles').toArray().map(function(obj,i){
+                                        data.roles.push($(obj).val().trim());
+                                    });
+
+                                    data.ccroles = [];
+                                    form.find('.ccroles').toArray().map(function(obj,i){
+                                        data.ccroles.push($(obj).val().trim());
+                                    });
+
+                                    console.log(data);
+
+                                    swal({
+                                        title: "Working..",
+                                        text: "Please wait while we set up the template..",
+                                        imageUrl: "/img/ripple.gif",
+                                        showConfirmButton:false
+                                    });
+
+                                    $.ajax({
+                                        type:'POST',
+                                        url:'/embeddedTemplates',
+                                        data:data,
+                                        success: function(response){
+
+                                            swal({
+                                                type:'success',
+                                                title: "Done!",
+                                                text: "You can now edit the template",
+                                                timer: 2000,
+                                                showConfirmButton: false
+                                            });
+
+                                            if(response.statusMessage=='OK'){
+                                                $('.step1').addClass('hidden');
+                                                $('.step2').removeClass('hidden');
+
+                                                HelloSign.open({
+                                                    url: response.template['edit_url'],
+                                                    container:document.getElementById('embeddedTemplatesContainer'),
+                                                    messageListener: function(eventData) {
+                                                        console.log(eventData);
+
+                                                        if(eventData.event=='template_created'){
+                                                            $('.step2').addClass('hidden');
+                                                            $('.step3').removeClass('hidden');
+
+                                                            $.ajax({
+                                                                type:'POST',
+                                                                url:'/getCustomTemplates',
+                                                                data:{id:eventData.template_id},
+                                                                success: function(response){
+
+                                                                    console.log(response);
+
+                                                                    $('.step3 .tab-main').html('');
+
+                                                                    response.map(function(obj){
+
+                                                                        $('.step3 .tab-main').append('<div class="row">'+
+                                                                                '<div class="col-sm-3">'+obj.name+'</div>'+
+                                                                                '<div class="col-sm-3">'+obj.filename+'</div>'+
+                                                                                '<div class="col-sm-4"><div class="btn btn-default cta" data-name="'+obj.name+'" data-id="'+obj.templateId+'" onclick="requestSign(this)">Request Signature</div></div>'+
+                                                                                '</div>')
+
+                                                                    })
+
+                                                                }
+                                                            })
+
+                                                        }else{
+                                                            swal({
+                                                                type:'error',
+                                                                title: "Uh oh!",
+                                                                text: "An error has occurred. Please try again.",
+                                                                timer: 2000,
+                                                                showConfirmButton: false
+                                                            }, function(){
+                                                                $('.step2').addClass('hidden');
+                                                                $('.step1').removeClass('hidden');
+                                                            });
+                                                        }
+                                                    }
+                                                });
+
+                                                $('#hsEmbeddedFrame').css('width','100%');
+                                                $('#hsEmbeddedFrame').css('height','100%');
+
+                                            }
+                                        }
+                                    });
+
+                                }else{
+                                    myDropzone.processQueue();
+                                }
+
+                            });
+
+                            //send all the form data along with the files:
+                            myDropzone.on("sending", function(data, xhr, formData) {
+                                var name = form.find('#name').val().trim();
+                                var subject = form.find('#subject').val().trim();
+                                var message = form.find('#body').val().trim();
+
+                                var roles = [];
+                                form.find('.roles').toArray().map(function(obj,i){
+                                    roles.push($(obj).val());
+                                });
+
+                                var ccroles = [];
+                                form.find('.ccroles').toArray().map(function(obj,i){
+                                    ccroles.push($(obj).val().trim());
+                                });
+
+                                formData.append('name', name);
+                                formData.append('subject', subject);
+                                formData.append('message', message);
+                                formData.append('roles',roles);
+                                formData.append('ccroles',ccroles);
+
+                                swal({
+                                    title: "Working..",
+                                    text: "Please wait while we set up the template..",
+                                    imageUrl: "/img/ripple.gif",
+                                    showConfirmButton:false
+                                });
+
+                            });
+
+                            myDropzone.on('complete', function(a,b){
+
+                                var response = JSON.parse(a.xhr.response);
+                                console.log(response);
+
+                                swal({
+                                    type:'success',
+                                    title: "Done!",
+                                    text: "You can now edit the template",
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
+
+                                $('.step1').addClass('hidden');
+                                $('.step2').removeClass('hidden');
+
+                                HelloSign.open({
+                                    url: response.template['edit_url'],
+                                    container:document.getElementById('embeddedTemplatesContainer'),
+                                    messageListener: function(eventData) {
+                                        console.log(eventData);
+
+                                        if(eventData.event=='template_created'){
+                                            $('.step2').addClass('hidden');
+                                            $('.step3').removeClass('hidden');
+
+                                            $.ajax({
+                                                type:'POST',
+                                                url:'/getCustomTemplates',
+                                                data:{id:eventData.template_id},
+                                                success: function(response){
+
+                                                    console.log(response);
+
+                                                    $('.step3 .tab-main').html('');
+
+                                                    response.map(function(obj){
+
+                                                        $('.step3 .tab-main').append('<div class="row">'+
+                                                                '<div class="col-sm-3">'+obj.name+'</div>'+
+                                                                '<div class="col-sm-3">'+obj.filename+'</div>'+
+                                                                '<div class="col-sm-4"><div class="btn btn-default cta" data-name="'+obj.name+'" data-id="'+obj.templateId+'" onclick="requestSign(this)">Request Signature</div></div>'+
+                                                                '</div>')
+
+                                                    })
+
+                                                }
+                                            })
+
+                                        }else{
+                                            swal({
+                                                type:'error',
+                                                title: "Uh oh!",
+                                                text: "An error has occurred. Please try again.",
+                                                timer: 2000,
+                                                showConfirmButton: false
+                                            }, function(){
+                                                $('.step2').addClass('hidden');
+                                                $('.step1').removeClass('hidden');
+                                            });
+                                        }
+                                    }
+                                });
+
+                                $('#hsEmbeddedFrame').css('width','100%');
+                                $('#hsEmbeddedFrame').css('height','100%');
+
+                            })
+
+
+                        });
+
+                    </script>
+                </div>
+
+                <div class="step2 hidden">
+                    <div id="embeddedTemplatesContainer"></div>
+                </div>
+
+                <div class="step3 {{#if profile.custom}}{{else}}hidden{{/if}}">
+                    <div class="tab-body">
+                        <div class="tab-body-title custom-templates">Custom Templates</div>
+                        <div class="row labels tab-label-row">
+                            <div class="col-sm-3">Document Name</div>
+                            <div class="col-sm-3">File Name</div>
+                            <!--<div class="col-sm-3">Last Modified</div>-->
+                        </div>
+                        <div class="tab-main"></div>
+                        <br/>
+                        <br/>
+                        <div class="row">
+                            <div class="btn btn-default cta pull-left" style="width:250px" onclick="newTemplate()">Create a new template</div>
+                        </div>
+                    </div>
+                    <script>
+                        function newTemplate(){
+                            $('.step3').addClass('hidden');
+                            $('.step1').removeClass('hidden');
+                        }
+                    </script>
+                    {{#if profile.custom}}
+                        <script>
+                            $.ajax({
+                                type:'POST',
+                                url:'/getCustomTemplates',
+                                data:{id:""},
+                                success: function(response){
+
+                                    console.log(response);
+
+                                    response.map(function(obj){
+
+                                        $('.step3 .tab-main').append('<div class="row">'+
+                                                '<div class="col-sm-3 template-file-text">'+obj.name+'</div>'+
+                                                '<div class="col-sm-3 template-file-text">'+obj.filename+'</div>'+
+                                                '<div class="col-sm-4"><div class="btn btn-default cta" data-name="'+obj.name+'" data-id="'+obj.templateId+'" onclick="requestSign(this)">Request Signature</div></div>'+
+                                                '</div>')
+
+                                    })
+
+                                }
+                            })
+                        </script>
+                    {{/if}}
+
+                    <div class="modal fade" id="signersModal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <div class="main row">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div><label for="" class="title"></label></div>
+                                            </div>
+                                        </div>
+                                        <br/>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div><label for="">Subject</label></div>
+                                                <div><input type="text" class="subject" style="width:100%"></div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div><label for="">Message</label></div>
+                                                <div><textarea rows="3" class="message" style="width:100%"></textarea></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="body row">
+
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default cta">Send Request</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+
+                        $('#signersModal').modal({show:false, backdrop:false});
+
+                        function requestSign(e){
+
+                            $('#signersModal .body').html("");
+
+                            var name = $(e).attr('data-name');
+
+                            console.log(name);
+
+                            swal({
+                                title: "Working..",
+                                text: "Getting template fields..",
+                                imageUrl: "/img/ripple.gif",
+                                showConfirmButton:false
+                            });
+
+                            $('#signersModal .main .title').html(name);
+
+                            var tid = $(e).attr('data-id');
+
+                            $('#signersModal .cta').attr('data-tid',tid);
+
+                            $.ajax({
+                                type:'POST',
+                                url:'/fromTemplate',
+                                data:{templateId:tid},
+                                success: function(response){
+
+                                    console.log(response);
+
+                                    swal.close();
+
+                                    if(response.statusMessage=='OK'){
+
+                                        response.template.signer_roles.map(function(sr){
+
+                                            $('#signersModal .body').append('<div class="signer">' +
+                                                    '<div class="row" style="padding-top:20px; margin-bottom:-10px!important;"><div class="col-sm-4">Role: </div><div class="col-sm-4 role">'+sr.name+'</div></div><br/>' +
+                                                    '<div class="row"><div class="col-sm-4"><label>Signer Name:</label></div><div class="col-sm-4"><input type="text" class="name"/></div></div>' +
+                                                    '<div class="row"><div class="col-sm-4"><label>Signer Email:</label></div><div class="col-sm-4"><input type="text" class="email"/></div></div><br/>' +
+                                                    '</div>')
+                                        });
+
+                                        $('#signersModal').modal('show')
+
+                                    }
+                                }
+                            });
+                        };
+
+                        $('#signersModal .cta').click(function() {
+
+                            var tid = $(this).attr('data-tid');
+
+                            var data = {
+                                templateId:tid,
+                                title : $('#signersModal .main .title').html(),
+                                subject : $('#signersModal .main .subject').val().trim(),
+                                message : $('#signersModal .main .message').val().trim()
+                            };
+
+                            var signers = [];
+
+                            var proceed = true;
+
+                            $('#signersModal .body .signer').toArray().map(function(obj){
+
+                                if(!$(obj).find('.name').val().trim()){
+                                    proceed=false;
+                                    !$(obj).find('.name').addClass('attention')
+                                }
+
+                                if(!$(obj).find('.email').val().trim()){
+                                    proceed=false;
+                                    !$(obj).find('.email').addClass('attention')
+                                }
+
+                                signers.push({
+                                    role: $(obj).find('.role').text().trim(),
+                                    name: $(obj).find('.name').val().trim(),
+                                    email_address: $(obj).find('.email').val().trim()
+                                })
+                            });
+
+                            console.log(data);
+
+
+                            data.signers = signers;
+                            data.category = "custom";
+
+                            console.log(data);
+
+                            if (!data.subject) {
+                                proceed = false;
+                                $('#signersModal .main .subject').addClass('attention')
+                            }
+
+                            if (!data.message) {
+                                proceed = false;
+                                $('#signersModal .main .message').addClass('attention')
+                            }
+
+
+                            if (proceed) {
+
+                                $('#signersModal').modal('hide');
+
+                                setTimeout(function () {
+                                    swal({
+                                        title: "Sending..",
+                                        text: "We are sending your signature request",
+                                        imageUrl: "/img/ripple.gif",
+                                        showConfirmButton: false
+                                    });
+                                }, 300);
+
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/sendRequestFromTemplate',
+                                    data: data,
+                                    success: function (response) {
+
+                                        console.log(response);
+
+                                        if (response.statusMessage == 'OK') {
+
+                                            swal.close();
+                                            $('.step3').addClass('hidden');
+                                            $('.step4').removeClass('hidden');
+
+                                        }
+                                    }
+                                });
+
+                            } else {
+
+                            }
+                        });
+
+                    </script>
+                </div>
+
+                <div class="step4 hidden col-sm-12">
+                    <div class="successBox">
+                        <div>
+                            <img class="check" src="/img/success-button.png"/>
+                            <div class="text">Your document has been successfully sent.</div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="btn btn-default cta middle" onclick="back()">Return to embedded templates</div>
+                </div>
+
+                <script>
+                    function back(){
+                        $('.step4').addClass('hidden');
+                        $('.step3').removeClass('hidden');
+                    }
+                </script>
+
+            {{/if}}
+
+            {{#if one-off}}
+
+                <div class="step1 col-sm-6">
+                    <form id="oneOffForm" enctype="multipart/form-data">
+                        <div class="formTitle">Request a Signature</div>
+                        <br/>
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="title" id="title" placeholder="Document title">
+                        </div>
+
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="name" id="name" placeholder="Name of signer">
+                        </div>
+
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="signer_email" id="signer_email" placeholder="Email address of signer">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Add the roles that need to sign</label>
+                            <br/>
+                            <label class="small-label">Who needs to sign?</label>
+                            <input type="text" class="form-control roles" placeholder="Signing Role (Manager, Client, etc.)">
+                            <div class="addRole">
+                                <span class="icon">
+                                    <span class="fa-stack">
+                                      <i class="fa fa-plus fa-stack-1x"></i>
+                                      <i class="fa fa-circle-thin fa-stack-2x"></i>
+                                    </span>
+                                </span>
+                                <span class="text">Add Role</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject    "/>
+                        </div>
+
+                        <div class="form-group">
+                            <textarea class="form-control" style="margin-top:20px;" rows="5" name="body" id="body" placeholder="Message"></textarea>
+                        </div>
+
+                        <!-- Sender email defaults to hellosign user email associated with key
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="sender_email" id="sender_email" placeholder="Email address of sender">
+                        </div>
+                        -->
+
+                        <div class="form-group">
+                            <label for="template">Upload a document file</label>
+                            <div class='dropzone' id="template"></div>
+                        </div>
+
+                        <button id="proceed" type="submit" class="btn btn-default pull-left">Submit</button>
+                    </form>
+                    <script>
+                        Dropzone.autoDiscover = false;
+
+                        $('.addRole').click(function(){
+                            $('<div style="position:relative;"><input type="text" class="form-control roles" style="margin-top:10px;" placeholder="Signing Role (Manager, Client, etc.)"><div class="removeRole"><i class="fa fa-times"></i></div></div>').insertBefore($(this));
+                            $('.removeRole').click(function(){
+                                console.log('clicked');
+                                $(this).parent().remove();
+                            });
+                        });
+
+                        $(document).ready(function(){
+                            var myDropzone = new Dropzone(".dropzone", {
+                                url: '/oneOff',
+                                autoProcessQueue: false,
+                                addRemoveLinks: true,
+                                paramName:'file',
+                                dictDefaultMessage:'Upload document',
+                                thumbnailWidth:null,
+                                init: function() {
+                                }}
+                            );
+
+                            $("#proceed").click(function(e) {
+
+                                var form = $('#oneOffForm');
+
+                                console.log('Submitting..');
+                                e.preventDefault();
+                                e.stopPropagation();
+
+                                if(!myDropzone.files.length){
+
+                                    var data = {};
+
+                                    data.title = form.find('#title').val().trim();
+                                    data.name = form.find('#name').val().trim();
+                                    data.signer = form.find('#signer_email').val().trim();
+                                    //data.sender = form.find('#sender_email').val().trim();
+                                    data.subject = form.find('#subject').val().trim();
+                                    data.message = form.find('#body').val().trim();
+
+                                    console.log(data);
+
+                                    swal({
+                                        title: "Sending..",
+                                        text: "We are sending the form.",
+                                        imageUrl: "/img/ripple.gif",
+                                        showConfirmButton:false
+                                    });
+
+                                    $.ajax({
+                                        type:'POST',
+                                        url:'/oneOff',
+                                        data:data,
+                                        success: function(response){
+
+                                            swal.close();
+
+                                            console.log(response);
+                                            if(response.statusMessage=='OK'){
+                                                $('.step1').addClass('hidden');
+                                                $('.step2').removeClass('hidden');
+
+                                                HelloSign.open({
+                                                    url: response.template['edit_url'],
+                                                    container:document.getElementById('embeddedTemplatesContainer'),
+                                                    messageListener:function(eventData){
+                                                        $('.step2').addClass('hidden');
+                                                        $('.step3').removeClass('hidden');
+                                                    }
+                                                });
+
+                                                $('#hsEmbeddedFrame').css('width','100%');
+                                                $('#hsEmbeddedFrame').css('height','100%');
+
+                                                checkFrame = setInterval(function(){
+                                                    console.log('Checking');
+                                                    if(!document.getElementById('hsEmbeddedFrame')){
+                                                        $('.step2').addClass('hidden');
+                                                        $('.step3').removeClass('hidden');
+                                                        clearInterval(checkFrame);
+                                                    }
+                                                },500);
+                                            }
+                                        }
+                                    });
+
+                                }else{
+                                    myDropzone.processQueue();
+                                }
+
+                            });
+
+                            //send all the form data along with the files:
+                            myDropzone.on("sending", function(data, xhr, formData) {
+                                formData.append("name", $("#name").val());
+                                formData.append("signer", $("#signer_email").val());
+                                //formData.append("sender", $("#sender_email").val());
+                                formData.append("title", $("#title").val());
+                                formData.append("subject", $("#subject").val());
+                                formData.append("message", $("#body").val());
+
+                                swal({
+                                    title: "Sending..",
+                                    text: "We are sending the form.",
+                                    imageUrl: "/img/ripple.gif",
+                                    showConfirmButton:false
+                                });
+
+                                console.log(formData);
+                            });
+
+                            myDropzone.on('complete', function(a,b){
+                                swal.close();
+                                $('.step1').addClass('hidden');
+                                $('.step2').removeClass('hidden');
+                                console.log(a,b);
+                            })
+
+
+                        });
+
+                    </script>
+                </div>
+
+                <div class="step2 hidden col-sm-12">
+                    <div class="successBox">
+                        <div>
+                            <img class="check" src="/img/success-button.png"/>
+                            <div class="text">Your document has been successfully sent.</div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="btn btn-default cta middle" onclick="next()">Next: Embedded Requesting from Template</div>
+                </div>
+
+                <script>
+                    function next(){
+                         window.location.href = '/{{profile.url}}/from-template';
+                    }
+                </script>
+
+            {{/if}}
+
+            {{#if from-template}}
+
+                <div class="step1">
+                    <!-- Tabs -->
+                    {{#if profile.hr}}
+                        <div class="tab-header col-sm-{{profile.tabs}}" data-cat="hr">
+                            <div>
+                                HR Documents
+                            </div>
+                        </div>
+                    {{/if}}
+
+                    {{#if  profile.realestate}}
+                        <div class="tab-header col-sm-{{profile.tabs}}" data-cat="realestate">
+                            <div>
+                                Real Estate Documents
+                            </div>
+                        </div>
+                    {{/if}}
+
+                    {{#if profile.legal}}
+                        <div class="tab-header col-sm-{{profile.tabs}}" data-cat="legal">
+                            <div>
+                                Legal Documents
+                            </div>
+                        </div>
+                    {{/if}}
+
+                    <!-- Tab Body -->
+
+                    {{#if profile.hr}}
+                        <div class="tab-body hr-tab hidden">
+                            <div class="tab-body-title">Request a signature - HR</div>
+                            <div class="row labels tab-label-row">
+                                <div class="col-sm-3">Document Name</div>
+                                <div class="col-sm-3">File Name</div>
+                                <!--<div class="col-sm-3">Last Modified</div>-->
+                            </div>
+                            {{#each profile.hr}}
+                                <div class="row">
+                                    <div class="col-sm-3 template-file-text">{{this.name}}</div>
+                                    <div class="col-sm-3 template-file-text">{{this.filename}}</div>
+                                    <!--<div class="col-sm-3"></div>-->
+                                    <div class="col-sm-4"><div class="btn btn-default cta" data-name="{{this.name}}" data-id="{{this.templateId}}">Request Signature</div></div>                                </div>
+                            {{/each}}
+                        </div>
+                    {{/if}}
+
+                    {{#if profile.realestate}}
+                        <div class="tab-body realestate-tab hidden">
+                            <div class="tab-body-title">Request a signature - Real Estate</div>
+                            <div class="row labels tab-label-row">
+                                <div class="col-sm-3">Document Name</div>
+                                <div class="col-sm-3">File Name</div>
+                                <!--<div class="col-sm-3">Last Modified</div>-->
+                            </div>
+                            {{#each profile.realestate}}
+                                <div class="row">
+                                    <div class="col-sm-3 template-file-text">{{this.name}}</div>
+                                    <div class="col-sm-3 template-file-text">{{this.filename}}</div>
+                                    <!--<div class="col-sm-3"></div>-->
+                                    <div class="col-sm-4"><div class="btn btn-default cta" data-name="{{this.name}}" data-id="{{this.templateId}}">Request Signature</div></div>
+                                </div>
+                            {{/each}}
+                        </div>
+                    {{/if}}
+
+                    {{#if profile.legal}}
+                        <div class="tab-body legal-tab hidden">
+                            <div class="tab-body-title">Request a signature - Legal</div>
+                            <div class="row labels tab-label-row">
+                                <div class="col-sm-3">Document Name</div>
+                                <div class="col-sm-3">File Name</div>
+                                <!--<div class="col-sm-3">Last Modified</div>-->
+                            </div>
+                            {{#each profile.legal}}
+                                <div class="row">
+                                    <div class="col-sm-3 template-file-text">{{this.name}}</div>
+                                    <div class="col-sm-3 template-file-text">{{this.filename}}</div>
+                                    <!--<div class="col-sm-3"></div>-->
+                                    <div class="col-sm-4"><div class="btn btn-default cta" data-name="{{this.name}}" data-id="{{this.templateId}}">Request Signature</div></div>                                </div>
+                            {{/each}}
+                        </div>
+                    {{/if}}
+
+                    <div class="modal fade" id="signersModal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <div class="main row">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div><label for="" class="title"></label></div>
+                                            </div>
+                                        </div>
+                                        <br/>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div><label for="">Subject</label></div>
+                                                <div><input type="text" class="subject" style="width:100%"></div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div><label for="">Message</label></div>
+                                                <div><textarea rows="3" class="message" style="width:100%"></textarea></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="body row">
+
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default cta">Send Request</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+
+                        $('.tab-header').click(function(){
+                            var cat = $(this).attr('data-cat');
+                            console.log(cat);
+                            $('.tab-body').addClass('hidden');
+                            $('.tab-header').removeClass('active-tab');
+                            $('.'+cat+'-tab').removeClass('hidden');
+                            $(this).addClass('active-tab');
+                        });
+
+                        $('#signersModal').modal({show:false, backdrop:false});
+
+                        $($('.tab-header').toArray()[0]).addClass('active-tab');
+                        $($('.tab-body').toArray()[0]).removeClass('hidden');
+
+                        $('.tab-body .cta').click(function(){
+
+                            $('#signersModal .body').html("");
+
+                            var name = $(this).attr('data-name');
+
+                            console.log(name);
+
+                            swal({
+                                title: "Working..",
+                                text: "Getting template fields..",
+                                imageUrl: "/img/ripple.gif",
+                                showConfirmButton:false
+                            });
+
+                            $('#signersModal .main .title').html(name);
+
+                            var tid = $(this).attr('data-id');
+
+                            $('#signersModal .cta').attr('data-tid',tid);
+
+                            $.ajax({
+                                type:'POST',
+                                url:'/fromTemplate',
+                                data:{templateId:tid},
+                                success: function(response){
+
+                                    swal.close();
+
+                                    console.log(response);
+
+                                    if(response.statusMessage=='OK'){
+
+                                        response.template.signer_roles.map(function(sr){
+
+                                            $('#signersModal .body').append('<div class="signer">' +
+                                                    '<div class="row" style="padding-top:20px;margin-bottom:-10px!important;"><div class="col-sm-4">Role: </div><div class="col-sm-4 role">'+sr.name+'</div></div><br/>' +
+                                                    '<div class="row"><div class="col-sm-4"><label>Signer Name:</label></div><div class="col-sm-4"><input type="text" class="name"/></div></div>' +
+                                                    '<div class="row"><div class="col-sm-4"><label>Signer Email:</label></div><div class="col-sm-4"><input type="text" class="email"/></div></div><br/>' +
+                                                    '</div>')
+                                        });
+
+                                        $('#signersModal').modal('show')
+
+                                    }
+                                }
+                            });
+                        });
+
+                        $('#signersModal .cta').click(function(){
+
+                            var tid = $(this).attr('data-tid');
+
+                            var data = {
+                                templateId:tid,
+                                title : $('#signersModal .main .title').html(),
+                                subject : $('#signersModal .main .subject').val().trim(),
+                                message : $('#signersModal .main .message').val().trim()
+                            };
+
+                            var signers = [];
+
+                            var proceed = true;
+
+                            $('#signersModal .body .signer').toArray().map(function(obj){
+
+                                if(!$(obj).find('.name').val().trim()){
+                                    proceed=false;
+                                    !$(obj).find('.name').addClass('attention')
+                                }
+
+                                if(!$(obj).find('.email').val().trim()){
+                                    proceed=false;
+                                    !$(obj).find('.email').addClass('attention')
+                                }
+
+                                signers.push({
+                                    role: $(obj).find('.role').text().trim(),
+                                    name: $(obj).find('.name').val().trim(),
+                                    email_address: $(obj).find('.email').val().trim()
+                                })
+                            });
+
+                            data.signers = signers;
+                            data.category = $('.active-tab').attr('data-cat');
+
+                            console.log(data);
+
+                            if(!data.subject){
+                                proceed=false;
+                                $('#signersModal .main .subject').addClass('attention')
+                            }
+
+                            if(!data.message){
+                                proceed=false;
+                                $('#signersModal .main .message').addClass('attention')
+                            }
+
+
+                            if(proceed){
+                                $('#signersModal').modal('hide');
+
+                                setTimeout(function(){
+                                    swal({
+                                        title: "Sending..",
+                                        text: "We are sending your signature request",
+                                        imageUrl: "/img/ripple.gif",
+                                        showConfirmButton:false
+                                    });
+                                },300);
+
+                                $.ajax({
+                                    type:'POST',
+                                    url:'/sendRequestFromTemplate',
+                                    data:data,
+                                    success: function(response){
+
+                                        console.log(response);
+
+                                        if(response.statusMessage=='OK'){
+
+                                            swal.close();
+                                            $('.step1').addClass('hidden');
+                                            $('.step2').removeClass('hidden');
+
+                                        }
+                                    }
+                                });
+                            }else{
+
+                            }
+
+                        });
+
+                    </script>
+                </div>
+
+                <div class="step2 hidden col-sm-12">
+                    <div class="successBox">
+                        <div>
+                            <img class="check" src="/img/success-button.png"/>
+                            <div class="text">Your document has been successfully sent.</div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="btn btn-default cta middle" onclick="next()">Next: Status of Embedded Requesting</div>
+                </div>
+
+                <script>
+                    function next(){
+                        window.location.href = '/{{profile.url}}/status';
+                    }
+                </script>
+
+            {{/if}}
+
+            {{#if status}}
+                <div status-main>
+                    {{#if profile.hr}}
+                        <div class="status-container" data-cat="hr">
+                            <div class="status-header">
+                                Document Status | Human Resources
+                            </div>
+                            <hr/>
+                            <div class="status-body">
+
+                                <div class="row status">
+                                    <div class="col-sm-1 created">
+                                        <div class="top">MAR</div>
+                                        <div class="bottom">20</div>
+                                    </div>
+                                    <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                                    <div class="col-sm-6 info">
+                                        <div class="top">Alex Merceoni</div>
+                                        <div class="bottom">Dress Code Policy Update</div>
+                                    </div>
+                                    <div class="col-sm-4 status-code" style="color:green">Complete</div>
+                                </div>
+                                <br/>
+                                <div class="row status">
+                                    <div class="col-sm-1 created">
+                                        <div class="top">JUN</div>
+                                        <div class="bottom">18</div>
+                                    </div>
+                                    <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                                    <div class="col-sm-6 info">
+                                        <div class="top">Jessica Charmini</div>
+                                        <div class="bottom">Employment Agreement</div>
+                                    </div>
+                                    <div class="col-sm-4 status-code" style="color:green">Complete</div>
+                                </div>
+                                <br/>
+                                <div class="row status">
+                                    <div class="col-sm-1 created">
+                                        <div class="top">JUN</div>
+                                        <div class="bottom">18</div>
+                                    </div>
+                                    <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                                    <div class="col-sm-6 info">
+                                        <div class="top">Robert Alenhan</div>
+                                        <div class="bottom">Employment Agreement</div>
+                                    </div>
+                                    <div class="col-sm-4 status-code" style="color:red">Past Due</div>
+                                </div>
+                                <br/>
+                                {{#each profile.hr_requests}}
+                                    <div class="row status">
+                                        <div class="col-sm-1 created">
+                                            <div class="top">{{this.createdMonth}}</div>
+                                            <div class="bottom">{{this.createdDate}}</div>
+                                        </div>
+                                        <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                                        <div class="col-sm-6 info">
+                                            <div class="top">{{this.names}}</div>
+                                            <div class="bottom">{{this.title}}</div>
+                                        </div>
+                                        <div class="col-sm-4 status-code">
+                                            <div class="top">{{this.status}}</div>
+                                            <div class="bottom">{{this.statuscta}}</div>
+                                        </div>
+                                    </div>
+                                    <br/>
+                                {{/each}}
+
+                            </div>
+                        </div>
+                    {{/if}}
+
+                    {{#if  profile.realestate}}
+                        <div class="status-container" data-cat="realestate">
+                            <div class="status-header">
+                                Document Status | Real Estate
+                            </div>
+                            <hr/>
+                            <div class="status-body">
+
+                                <div class="row status">
+                                    <div class="col-sm-1 created">
+                                        <div class="top">MAR</div>
+                                        <div class="bottom">20</div>
+                                    </div>
+                                    <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                                    <div class="col-sm-6 info">
+                                        <div class="top">Alex Merceoni</div>
+                                        <div class="bottom">Dress Code Policy Update</div>
+                                    </div>
+                                    <div class="col-sm-4 status-code" style="color:green">Complete</div>
+                                </div>
+                                <br/>
+                                <div class="row status">
+                                    <div class="col-sm-1 created">
+                                        <div class="top">JUN</div>
+                                        <div class="bottom">18</div>
+                                    </div>
+                                    <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                                    <div class="col-sm-6 info">
+                                        <div class="top">Jessica Charmini</div>
+                                        <div class="bottom">Employment Agreement</div>
+                                    </div>
+                                    <div class="col-sm-4 status-code" style="color:green">Complete</div>
+                                </div>
+                                <br/>
+                                <div class="row status">
+                                    <div class="col-sm-1 created">
+                                        <div class="top">JUN</div>
+                                        <div class="bottom">18</div>
+                                    </div>
+                                    <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                                    <div class="col-sm-6 info">
+                                        <div class="top">Robert Alenhan</div>
+                                        <div class="bottom">Employment Agreement</div>
+                                    </div>
+                                    <div class="col-sm-4 status-code" style="color:red">Past Due</div>
+                                </div>
+                                <br/>
+                                <div class="row status">
+                                    <div class="col-sm-1 created">
+                                        <div class="top">JUN</div>
+                                        <div class="bottom">18</div>
+                                    </div>
+                                    <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                                    <div class="col-sm-6 info">
+                                        <div class="top">Tony Oswald</div>
+                                        <div class="bottom">Employment Agreement</div>
+                                    </div>
+                                    <div class="col-sm-4 status-code" style="color:red">Past Due</div>
+                                </div>
+                                <br/>
+                                {{#each profile.realestate_requests}}
+                                    <div class="row status">
+                                        <div class="col-sm-1 created">
+                                            <div class="top">{{this.createdMonth}}</div>
+                                            <div class="bottom">{{this.createdDate}}</div>
+                                        </div>
+                                        <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                                        <div class="col-sm-6 info">
+                                            <div class="top">{{this.names}}</div>
+                                            <div class="bottom">{{this.title}}</div>
+                                        </div>
+                                        <div class="col-sm-4 status-code">{{this.status}}</div>
+                                    </div>
+                                    <br/>
+                                {{/each}}
+
+                            </div>
+                        </div>
+                    {{/if}}
+
+                    {{#if profile.legal}}
+                        <div class="status-container" data-cat="legal">
+                            <div class="status-header">
+                                Document Status | Legal
+                            </div>
+                            <hr/>
+                            <div class="status-body">
+
+                                <div class="row status">
+                                    <div class="col-sm-1 created">
+                                        <div class="top">JUN</div>
+                                        <div class="bottom">18</div>
+                                    </div>
+                                    <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                                    <div class="col-sm-6 info">
+                                        <div class="top">Jessica Charmini</div>
+                                        <div class="bottom">Employment Agreement</div>
+                                    </div>
+                                    <div class="col-sm-4 status-code" style="color:green">Complete</div>
+                                </div>
+                                <br/>
+                                <div class="row status">
+                                    <div class="col-sm-1 created">
+                                        <div class="top">JUN</div>
+                                        <div class="bottom">18</div>
+                                    </div>
+                                    <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                                    <div class="col-sm-6 info">
+                                        <div class="top">Robert Alenhan</div>
+                                        <div class="bottom">Employment Agreement</div>
+                                    </div>
+                                    <div class="col-sm-4 status-code" style="color:red">Past Due</div>
+                                </div>
+                                <br/>
+
+                                {{#each profile.legal_requests}}
+                                    <div class="row status">
+                                        <div class="col-sm-1 created">
+                                            <div class="top">{{this.createdMonth}}</div>
+                                            <div class="bottom">{{this.createdDate}}</div>
+                                        </div>
+                                        <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                                        <div class="col-sm-6 info">
+                                            <div class="top">{{this.names}}</div>
+                                            <div class="bottom">{{this.title}}</div>
+                                        </div>
+                                        <div class="col-sm-4 status-code">{{this.status}}</div>
+                                    </div>
+                                    <br/>
+                                {{/each}}
+
+                            </div>
+                        </div>
+                    {{/if}}
+
+                    {{#if profile.custom}}
+                        <div class="status-container" data-cat="legal">
+                            <div class="status-header">
+                                Document Status | Custom Requests
+                            </div>
+                            <hr/>
+                            <div class="status-body">
+
+                                {{#each profile.custom_requests}}
+                                    <div class="row status">
+                                        <div class="col-sm-1 created">
+                                            <div class="top">{{this.createdMonth}}</div>
+                                            <div class="bottom">{{this.createdDate}}</div>
+                                        </div>
+                                        <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                                        <div class="col-sm-6 info">
+                                            <div class="top">{{this.names}}</div>
+                                            <div class="bottom">{{this.title}}</div>
+                                        </div>
+                                        <div class="col-sm-4 status-code">{{this.status}}</div>
+                                    </div>
+                                {{/each}}
+
+                            </div>
+                        </div>
+                    {{/if}}
+
+                </div>
+            {{/if}}
+
+            {{#if embedded-signing}}
+
+                <script>
+
+                    swal({
+                        title: "Working..",
+                        text: "Please wait while we set up the form..",
+                        imageUrl: "/img/ripple.gif",
+                        showConfirmButton:false
+                    });
+
+                    $.ajax({
+                        type:'POST',
+                        url:'/getEmbeddedSigning',
+                        success: function(response) {
+
+                            console.log(response);
+
+                            HelloSign.open({
+                                url: response.embedded.sign_url,
+                                container:document.getElementById('embeddedSigningContainer'),
+                                messageListener: function(eventData) {
+                                    console.log(eventData);
+
+                                    if(eventData.event=='signature_request_signed'){
+                                        $('.step1').addClass('hidden');
+                                        $('.step2').removeClass('hidden');
+                                    }
+                                }
+                            });
+
+                            swal.close();
+
+                            $('#hsEmbeddedFrame').css('width','100%');
+                            $('#hsEmbeddedFrame').css('height','100%');
+
+                        }
+                    });
+
+                    function next(){
+                        window.location.href = '/{{profile.url}}/signer-reassignment';
+                    }
+                </script>
+
+                <div class="step1">
+                    <div id="embeddedSigningContainer"></div>
+                </div>
+
+                <div class="step2 hidden col-sm-12">
+                    <div class="successBox">
+                        <div>
+                            <img class="check" src="/img/success-button.png"/>
+                            <div class="text">Your document has been successfully signed.</div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="btn btn-default cta middle" onclick="next()">Next: Signer Reassignment</div>
+                </div>
+
+            {{/if}}
+
+            {{#if signer-reassignment}}
+
+                <script>
+
+                    swal({
+                        title: "Working..",
+                        text: "Please wait while we set up the form..",
+                        imageUrl: "/img/ripple.gif",
+                        showConfirmButton:false
+                    });
+
+                    $.ajax({
+                        type:'POST',
+                        url:'/getEmbeddedReassign',
+                        success: function(response) {
+
+                            console.log(response);
+
+                            HelloSign.open({
+                                url: response.embedded.sign_url,
+                                container:document.getElementById('embeddedSigningReassign'),
+                                messageListener: function(eventData) {
+                                    console.log(eventData);
+
+                                    if(eventData.event=='signature_request_signed'){
+                                        $('.step1').addClass('hidden');
+                                        $('.step2').removeClass('hidden');
+                                    }
+                                }
+                            });
+
+                            swal.close();
+
+                            $('#hsEmbeddedFrame').css('width','100%');
+                            $('#hsEmbeddedFrame').css('height','100%');
+
+                        }
+                    });
+
+                    function next(){
+                        window.location.href = '/{{profile.url}}/signer-reassignment';
+                    }
+                </script>
+
+                <div class="step1">
+                    <div id="embeddedSigningReassign"></div>
+                </div>
+
+                <div class="step2 hidden col-sm-12">
+                    <div class="successBox">
+                        <div>
+                            <img class="check" src="/img/success-button.png"/>
+                            <div class="text">Your document has been successfully signed.</div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="btn btn-default cta middle" onclick="next()">Next: Signer Reassignment</div>
+                </div>
+
+            {{/if}}
+
+            {{#if merge-fields}}
+
+                <div class="step1 col-sm-6">
+
+                    <div class="merge-fields">
+
+                        <div class="text">
+                            This showcases the option to fill in data manually that couldn’t be pulled from your company’s databases.
+                            <br/>
+                        </div>
+
+                        <br/>
+
+                        <div class="people">
+
+                            <h4 style="font-weight:bold;">Signature Request</h4>
+                            <div class="interim">
+                                From 2017 Company Handbook Template > Existing Contact
+                            </div>
+                            <br/>
+                            <h4>Select from existing contacts</h4>
+                            <div class="contacts">
+                                <div class="contact">
+                                    <div class="portrait" style="background:url('/img/sample-employee-photo-1.png') center no-repeat; background-size: contain;"></div>
+                                    <div class="name">Lars McClusky</div>
+                                </div>
+                                <div class="contact">
+                                    <div class="portrait" style="background:url('/img/sample-employee-photo-2.png') center no-repeat; background-size: contain;"></div>
+                                    <div class="name">Sarah Bastin</div>
+                                </div>
+                                <div class="contact">
+                                    <div class="portrait" style="background:url('/img/sample-employee-photo-3.png') center no-repeat; background-size: contain;"></div>
+                                    <div class="name">Wally Wash..</div>
+                                </div>
+                                <div class="contact">
+                                    <div class="portrait" style="background:url('/img/sample-employee-photo-4.png') center no-repeat; background-size: contain;"></div>
+                                    <div class="name">Krista Adams</div>
+                                </div>
+                                <div class="contact">
+                                    <div class="portrait" style="background:url('/img/sample-employee-photo-5.png') center no-repeat; background-size: contain;"></div>
+                                    <div class="name">Bob Newport</div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <br/>
+                        <br/>
+
+                        <div class="text">
+                            First, let’s pull Wally’s information.
+                        </div>
+                        <br/>
+                        <div class="btn btn-default pull-left cta" onclick="next()">Pull Information</div>
+
+                        <div class="modal fade" id="mergeFieldsModal" tabindex="-1" role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <button style="margin-right:10px;" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <div class="body row">
+                                            <h4 style="font-weight:bold; padding-left:40px;">Signature Request</h4>
+                                            <div class="interim" style="padding-left:40px;">
+                                                From 2017 Company Handbook Template > Existing Contact
+                                            </div>
+                                            <br/>
+                                            <div class="mergeFields" style="margin-left:40px;">
+                                                <div class="row">
+                                                    <div class="col-sm-3"><label>Name</label></div>
+                                                    <div class="col-sm-8"><input class="disabled" id="name" value="Wally Washburn" disabled/></div>
+                                                    <div class="col-sm-1"><input ty</div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-3"><label>Email Address</label></div>
+                                                    <div class="col-sm-8"><input class="disabled" id="email" value="joe@finsweet.com"/></div>
+                                                    <div class="col-sm-1"></div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-3"><label>Start Date</label></div>
+                                                    <div class="col-sm-8"><input class="disabled" id="date" value="12/05/2015" disabled/></div>
+                                                    <div class="col-sm-1"></div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-3"><label>Position</label></div>
+                                                    <div class="col-sm-8"><input class="disabled" id="position" value="Marketing Manager" disabled/></div>
+                                                    <div class="col-sm-1"></div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-3"><label>New Position</label></div>
+                                                    <div class="col-sm-8"><input id="new_position"/></div>
+                                                    <div class="col-sm-1"></div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-3"><label>Compensation</label></div>
+                                                    <div class="col-sm-8"><input id="new_compensation"/></div>
+                                                    <div class="col-sm-1"></div>
+                                                </div>
+                                            </div>
+                                            <br/>
+                                            <div class="btn btn-default pull-left cta sendMergeFields" style="margin-left:40px;margin-bottom:30px;" onclick="merge()">Request Signature</div>
+                                            <br/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        $('#mergeFieldsModal').modal({show:false, backdrop:false});
+
+                        function next(){
+                            $('#mergeFieldsModal').modal().show();
+                        }
+
+                        function merge(){
+                            $('#mergeFieldsModal').modal().hide();
+
+                            swal({
+                                title: "Working..",
+                                text: "Sending signature request with merged fields..",
+                                imageUrl: "/img/ripple.gif",
+                                showConfirmButton:false
+                            });
+
+                            var form = $('#mergeFieldsModal .mergeFields');
+
+                            var data = {
+                                name:form.find('#name').val().trim(),
+                                position:form.find('#position').val().trim(),
+                                start:form.find('#date').val().trim(),
+                                new_position:form.find('#new_position').val().trim(),
+                                new_salary:form.find('#new_compensation').val().trim(),
+                                email:form.find('#email').val().trim()
+                            };
+
+                            console.log(data);
+
+                            $.ajax({
+                                type:'POST',
+                                url:'/mergeFields',
+                                data:data,
+                                success: function(response){
+
+                                    console.log(response);
+
+                                    if(response.statusMessage=='OK'){
+
+                                        swal.close();
+                                        $('.step1').addClass('hidden');
+                                        $('.step2').removeClass('hidden');
+
+                                    }
+                                },
+                                error: function(err){
+                                    console.log(err);
+                                }
+                            });
+
+                        }
+
+                    </script>
+
+                </div>
+
+                <div class="step2 hidden col-sm-12">
+                    <div class="successBox">
+                        <div>
+                            <img class="check" src="/img/success-button.png"/>
+                            <div class="text">Your document has been successfully sent.</div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="btn btn-default cta middle" onclick="next()">Next: Embedded Requesting from Template</div>
+                </div>
+
+            {{/if}}
+
+        </div>
+
+    </div>
+</div>

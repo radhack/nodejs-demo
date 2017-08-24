@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="39px" height="39px" viewBox="0 0 39 39" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 46.1 (44463) - http://www.bohemiancoding.com/sketch -->
+    <title>ic</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="-22.6%" y="-16.1%" width="145.2%" height="145.2%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.188536352   0 0 0 0 0.188536352   0 0 0 0 0.188536352  0 0 0 0.200888813 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+        <ellipse id="path-2" cx="15.2207002" cy="15.2247191" rx="15.2207002" ry="15.2247191"></ellipse>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Embedded-Request---Status" transform="translate(-438.000000, -433.000000)">
+            <g id="Status-example" transform="translate(332.000000, 149.000000)">
+                <g id="Group-6">
+                    <g id="Recent-Activity">
+                        <g id="Table" transform="translate(0.000000, 0.000000)">
+                            <g id="Content" transform="translate(48.000000, 117.000000)">
+                                <g id="3" transform="translate(-0.000000, 152.000000)">
+                                    <g id="ic" filter="url(#filter-1)" transform="translate(62.100457, 17.141573)">
+                                        <mask id="mask-3" fill="white">
+                                            <use xlink:href="#path-2"></use>
+                                        </mask>
+                                        <use id="Mask" fill="#C4664D" xlink:href="#path-2"></use>
+                                        <g id="001-letter-x" mask="url(#mask-3)" fill-rule="nonzero" fill="#FFFFFF">
+                                            <g transform="translate(10.899543, 10.611236)" id="Shape">
+                                                <path d="M0.126782609,0.747 C-0.0410869565,0.579130435 -0.0410869565,0.29973913 0.126782609,0.126 C0.300521739,-0.0418695652 0.574043478,-0.0418695652 0.747782609,0.126 L4.47417391,3.85865217 L8.20682609,0.126 C8.37469565,-0.0418695652 8.65408696,-0.0418695652 8.82156522,0.126 C8.99530435,0.29973913 8.99530435,0.579521739 8.82156522,0.747 L5.09517391,4.47378261 L8.82156522,8.20643478 C8.99530435,8.37430435 8.99530435,8.65369565 8.82156522,8.82743478 C8.65369565,8.99530435 8.37430435,8.99530435 8.20682609,8.82743478 L4.47417391,5.09478261 L0.747782609,8.82743478 C0.574043478,8.99530435 0.300521739,8.99530435 0.126782609,8.82743478 C-0.0410869565,8.65369565 -0.0410869565,8.37391304 0.126782609,8.20643478 L3.85317391,4.47378261 L0.126782609,0.747 Z"></path>
+                                            </g>
+                                        </g>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

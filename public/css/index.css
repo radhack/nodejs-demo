@@ -1,0 +1,170 @@
+
+/* OVERRIDE BOOTSTRAP */
+
+.form-control {
+    box-shadow: none!important;
+    -webkit-box-shadow: none!important;
+    border: solid 1.5px #dedede;
+}
+.form-control:focus {
+    border-color: #00b3e6;
+}
+/* end override styles*/
+
+ form {
+    padding: 40px 60px 150px 40px;
+    max-width: 800px;
+ }
+
+  
+ @media (max-width: 479px) {
+    .start-form-wrapper {
+        padding: 0px 5px;
+    }
+   }
+   
+   
+   #startForm{
+      padding: 40px 80px 80px;
+       margin-top: 20px;
+       border-radius: 4px;
+       box-shadow: 0px 0px 10px rgba(195, 195, 195, 0.3);
+   }
+   @media (max-width: 991px) {
+    #startForm {
+        padding: 40px 40px 80px;
+    }
+  }
+  @media (max-width: 479px) {
+    #startForm {
+        padding: 30px 30px 80px;
+    }
+  }
+
+
+
+/* temporary styling to account for the .form styling*/
+#embeddedTemplateForm {
+    padding-top: 0px!important;
+    margin-top: -20px;
+}
+
+#header {
+    margin-top: 50px;
+}
+@media (max-width: 767px) {
+    #header {
+        margin-top: 20px;
+    }
+}
+
+.btn {
+    color: white;
+    padding: 10px 32px;
+    background-color: #00b3e6!important;
+    border: 0px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    font-family: 'ProximaNovaSBold', sans-serif;
+    outline: none;
+    -webkit-transition: opacity 0.2s ease-out;
+    -moz-transition: opacity 0.2s ease-out;
+    -o-transition: opacity 0.2s ease-out;
+    transition: opacity 0.2s ease-out;
+    -webkit-transition: transform 0.1s ease-out;
+    -moz-transition: transform 0.1s ease-out;
+    -o-transition: transform 0.1s ease-out;
+    transition: transform 0.1s ease-out;
+
+}
+
+.btn:hover {
+    opacity: .7;
+    color: white;
+}
+
+/* !importants used to override bootstrap */
+.btn:active {
+    color: white!important;
+    outline: none!important;
+    box-shadow: none!important;
+    -ms-transform: scale(.99, .99);
+    -webkit-transform: scale(.99, .99);
+    transform: scale(.99, .99);
+}
+.btn:focus {
+    color: white!important;
+    outline: none!important;
+    box-shadow: none!important;
+}
+
+
+form input.form-control{
+    height:45px;
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    outline: none;
+}
+
+.btn.btn-default{
+    float:right;
+}
+@media (max-width: 767px) {
+.btn.btn-default{
+    float:left;
+}
+}
+.dropzone{
+    border: dashed #dedede 2px !important;
+    border-radius: 4px !important;
+    overflow: hidden;
+    -webkit-transition: border-color 0.2s ease-out;
+    -moz-transition: border-color 0.2s ease-out;
+    -o-transition: border-color 0.2s ease-out;
+    transition: border-color 0.2s ease-out;
+}
+.dropzone:hover{
+    border-color: #00b3e6;
+}
+
+.dz-default.dz-message{
+    color:#dedede;
+    font-size:16px;
+    margin-top:42px !important;
+}
+
+.dropzone{
+    text-align:center !important;
+}
+
+.dropzone .dz-preview{
+    margin:0 auto !important;
+}
+
+.dropzone .dz-preview .dz-image{
+    width:100%;
+}
+
+.dz-filename{
+    display:none !important;
+}
+
+.sp-replacer{
+    border-radius: 5px;
+    background: white;
+    border: solid 1px #dedede;
+    box-shadow: 1px 1px 1px #dedede;
+}
+
+.checkbox label {
+    max-width: 150px;
+}
+
+.ccontrol label{
+    margin-left:10px;
+}
+
+#header h3, #header h4{
+    width:100%;
+    text-align:center;
+}

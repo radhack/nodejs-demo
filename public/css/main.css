@@ -1,0 +1,17 @@
+@font-face {
+    font-family: ProximaNova;
+    src: url(/font/Proxima-Nova-Reg.otf);
+}
+@font-face {
+    font-family: ProximaNovaSBold;
+    src: url(/font/Proxima-Nova-Sbold.otf);
+}
+@font-face {
+    font-family: ProximaNovaLight;
+    src: url(/font/Proxima-Nova-Light.otf);
+}
+    
+body {
+    font-family: 'ProximaNova', sans-serif !important;
+    color: #666;
+}
