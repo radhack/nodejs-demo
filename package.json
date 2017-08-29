@@ -5,7 +5,7 @@
   "main": "main.js",
   "author": "irwynks",
   "engines": {
-    "node": "6.0.x"
+    "node": "8.4.0"
   },
   "dependencies": {
     "async": "^2.4.1",
