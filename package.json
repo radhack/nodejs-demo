@@ -4,6 +4,9 @@
   "description": "HelloSign demo platform for finsweet",
   "main": "main.js",
   "author": "irwynks",
+  "engines": {
+    "node": "6.9.1"
+  }
   "dependencies": {
     "async": "^2.4.1",
     "body-parser": "^1.17.2",
