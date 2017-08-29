@@ -8,7 +8,6 @@
     "node": "8.4.0"
   },
   "dependencies": {
-    "canvas": "git://github.com/elspoono/node-canvas-heroku.git",
     "async": "^2.4.1",
     "body-parser": "^1.17.2",
     "color-thief": "*",
