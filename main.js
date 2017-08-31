@@ -15,7 +15,7 @@ var exphbs = require('express-handlebars');
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
-app.use(require('body-parser').urlencoded({ extended: true }), req);
+app.use(require('body-parser').urlencoded({ extended: true }));
 
 var router = express.Router();
 app.use(router);
@@ -25,5 +25,8 @@ require('./routes/route.main.js')(router);
 server.listen(process.env.PORT || 9000);
 console.log("server's up and running");
 
-var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+app.get('/', function(req, res){
+  var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+});
+
 console.log('fullUrl');
