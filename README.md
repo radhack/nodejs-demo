@@ -1,6 +1,6 @@
 # nodejs-demo
 API Demo for Hellosign written in NodeJS.
----
+
 ## Update static urls and port
 This project includes some static urls in the controllers/control.form.js that need to be updated with our actual site's
 url (no protocol, just site.com), and the callback url (which would be http(s)://site.com/callback)
@@ -21,13 +21,12 @@ This integration requires MongoDB, and some environment variables, to operate.
 3. make sure you're in the ~ dir
 4. install node: https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/setting-up-node-on-ec2-instance.html
 5. install git: `sudo yum install git`
-6. make a directory for the node app
-7. cd into your new dir and clone the repo: `git clone https://github.com/HelloFax/nodejs-demo.git`
-8.  cd into the root of the project (where main.js and package.json live), and install cairo: 
+6. clone the repo: `git clone https://github.com/HelloFax/nodejs-demo.git`
+7. cd into the root of the project (where main.js and package.json live), and install cairo: 
 `sudo yum install cairo cairo-devel cairomm-devel libjpeg-turbo-devel pango pango-devel pangomm pangomm-devel giflib-devel`
 Here are the intructions just in case (you can't run just the `npm install cairo` package - the dependancies will break)
-9. install the project dependancies: `npm install`
-10. assuming no errors, you should now be able to spin up the node server. You'll need these env variables:
+8. install the project dependancies: `npm install`
+9. assuming no errors, you should now be able to spin up the node server. You'll need these env variables:
    * `MONGO_USER` - username for user created in mlab
    * `MONGO_PASS` - password for user
    * `MONGO_HOST` - this is everything after the @ symbol in the host address provided in mlab. For example, if the URL is,  `mongodb://<dbuser>:<dbpassword>@ds157723.mlab.com:57723/hellosign`, `MONGO_HOST` would be `ds157723.mlab.com:57723/hellosign`
@@ -35,7 +34,8 @@ Here are the intructions just in case (you can't run just the `npm install cairo
    * `HELLO_ID` Hellosign API app client ID
    
 so it'd be something like: `MONGO_USER=adminherp MONGO_PASS=adminderp MONGO_HOST=ds115124.mlab.com:15124/derpnode HELLO_KEY=[API_KEY_HERE] HELLO_ID=[CLIENT_ID_HERE] node main.js`
-11. Map the port 80 to the port you used (9000 again is the default)
+
+10. Map the port 80 to the port you used (9000 again is the default)
 
 --- these are the original instructions for Heroku, which do not work since cairo cannot run on Heroku ---
 ## Install (this is busted because of a package resourse called cairo, which won't run on heroku for some reason)
