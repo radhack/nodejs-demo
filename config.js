@@ -5,5 +5,5 @@ module.exports = {
     },
 
     hellosignKey: process.env.HELLO_KEY,
-    hellosignID: process.env.HELLO_ID'
+    hellosignID: process.env.HELLO_ID
 };

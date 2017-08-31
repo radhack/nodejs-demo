@@ -96,8 +96,8 @@ module.exports = {
 
         var options = {
             name: data.company,
-            domain: 'hellosigndemo.finsweet.com',
-            callback_url: 'http://hellosigndemo.finsweet.com/callback',
+            domain: 'ec2-107-21-194-166.compute-1.amazonaws.com', //change this to hosting url (do not include protocol)
+            callback_url: 'http://ec2-107-21-194-166.compute-1.amazonaws.com/callback', //change this too, but do include protocol and the /callback
             white_labeling_options: JSON.stringify(wlabel)
         };
 
