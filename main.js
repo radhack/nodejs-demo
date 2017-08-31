@@ -6,7 +6,7 @@ var server = require('http').Server(app);
 
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-mongoose.connect(config.mongodb.host);
+mongoose.connect(config.mongodb.host,{useMongoClient: true});
 
 app.use('/', express.static(__dirname + "/public"));
 app.use('/uploads', express.static(__dirname + "/uploads"));
