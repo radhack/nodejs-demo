@@ -23,3 +23,4 @@ app.use(router);
 require('./routes/route.main.js')(router);
 
 server.listen(process.env.PORT || 9000);
+console.log("server's up and running");
