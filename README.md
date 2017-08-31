@@ -30,6 +30,7 @@ Here are the intructions just in case (you can't run just the `npm install cairo
    * `HELLO_ID` Hellosign API app client ID
    * `DOMAIN` url where the project's hosted - ex: mysite.com (do not use the protocol)
    * `CALLBACK_URL` fully qualified url + /callback - ex: http://mysite.com/callback (so for this one, you DO use the http protocol)
+   * `PORT` (optional) the port that you'll run locally. It's set in main.js as 9000 by default.
    
 so it'd be something like: `MONGO_USER=adminherp MONGO_PASS=adminderp MONGO_HOST=ds115124.mlab.com:15124/derpnode HELLO_KEY=[API_KEY_HERE] HELLO_ID=[CLIENT_ID_HERE] DOMAIN=mysite.com CALLBACK_URL=http://mysite.com/callback node main.js`
 
