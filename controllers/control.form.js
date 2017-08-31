@@ -96,7 +96,7 @@ module.exports = {
 
         var options = {
             name: data.company,
-            domain: 'http://ec2-107-21-194-166.compute-1.amazonaws.com',
+            domain: 'ec2-107-21-194-166.compute-1.amazonaws.com',
             callback_url: 'http://ec2-107-21-194-166.compute-1.amazonaws.com/callback',
             white_labeling_options: JSON.stringify(wlabel)
         };
