@@ -1,13 +1,9 @@
 # nodejs-demo
 API Demo for Hellosign written in NodeJS.
 
-## Update static urls and port
-This project includes some static urls in the controllers/control.form.js that need to be updated with our actual site's
-url (no protocol, just site.com), and the callback url (which would be http(s)://site.com/callback)
-
-NOTE: the PORT used in this project is 9000 to get around protected low ports. You can easily change the port in the project by updating main.js on the line `server.listen(process.env.PORT || 80);`
-
-Also, we'll need to decide which HelloSign account's API Key we'll use, and we'll have to create the first app under that account and get the client_id
+## NOTE
+We'll need to decide which HelloSign account's API Key we'll use, and we'll have to create the first app under that
+account and get a client_id (requirement of the project)
 
 ## MongoDB
 This integration requires MongoDB, and some environment variables, to operate.
@@ -32,8 +28,10 @@ Here are the intructions just in case (you can't run just the `npm install cairo
    * `MONGO_HOST` - this is everything after the @ symbol in the host address provided in mlab. For example, if the URL is,  `mongodb://<dbuser>:<dbpassword>@ds157723.mlab.com:57723/hellosign`, `MONGO_HOST` would be `ds157723.mlab.com:57723/hellosign`
    * `HELLO_KEY` Hellosign API key
    * `HELLO_ID` Hellosign API app client ID
+   * `DOMAIN` url where the project's hosted - ex: mysite.com (do not use the protocol)
+   * `CALLBACK_URL` fully qualified url + /callback - ex: http://mysite.com/callback (so for this one, you DO use the http protocol)
    
-so it'd be something like: `MONGO_USER=adminherp MONGO_PASS=adminderp MONGO_HOST=ds115124.mlab.com:15124/derpnode HELLO_KEY=[API_KEY_HERE] HELLO_ID=[CLIENT_ID_HERE] node main.js`
+so it'd be something like: `MONGO_USER=adminherp MONGO_PASS=adminderp MONGO_HOST=ds115124.mlab.com:15124/derpnode HELLO_KEY=[API_KEY_HERE] HELLO_ID=[CLIENT_ID_HERE] DOMAIN=mysite.com CALLBACK_URL=http://mysite.com/callback node main.js`
 
 10. Map the port 80 to the port you used (9000 again is the default)
 
