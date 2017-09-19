@@ -3,6 +3,7 @@ var ColorThief = require('color-thief');
 var tinycolor = require('tinycolor2');
 var request = require('request');
 var contrast = require('wcag-contrast');
+var fs = require('fs');
 
 module.exports = {
 
@@ -14,6 +15,7 @@ module.exports = {
 
         var colors = [];
 
+        //Convert colors to hexstring
         palette.map(function(c){
             var tc = tinycolor("rgb ("+c[0]+","+c[1]+","+c[2]+")");
             colors.push(tc.toHexString())
@@ -23,6 +25,7 @@ module.exports = {
             primary:colors[0]
         };
 
+        //Select first 'dark' color in palette generated from image
         for(var i=0;i<colors.length;i++){
             if(tinycolor(colors[i]).isDark()){
                 selected.primary=colors[i];
@@ -36,13 +39,11 @@ module.exports = {
 
     },
 
+
     getContentBackground: function(color){
 
         var tc = tinycolor(color);
 
-        //if(tc.luminance>=0.9){
-        //    return '#fff';
-        //}else {
         while (tc.getLuminance() < 0.995) {
             if(tc.getLuminance() > 0.95){
                 tc = tc.brighten(1);
@@ -50,14 +51,14 @@ module.exports = {
                 tc = tc.brighten(5);
             }
         }
+
         return tc.toHexString();
-        //}
 
     },
 
     createNewApp: function(data, cb){
 
-        var bcolor = '#FFFFFF';
+        var bcolor = data.primaryColor;
         var tcolor = '#FFFFFF';
 
         var blight = '#F7F8F9';
@@ -66,11 +67,11 @@ module.exports = {
             bcolor = tinycolor(bcolor).darken(1).toString();
         }
 
-        while(contrast.hex(bcolor,data.primaryColor) < 2.1){
+        while(contrast.hex(bcolor,'#FFFFFF') < 2.1){
             bcolor = tinycolor(bcolor).darken(1).toString();
         }
 
-        while(contrast.hex(bcolor,data.primaryColor) < 2.1){
+        while(contrast.hex(bcolor,'#FFFFFF') < 2.1){
             bcolor = tinycolor(bcolor).darken(1).toString();
         }
 
@@ -80,9 +81,9 @@ module.exports = {
 
         var wlabel = {
             "page_background_color": '#F6F6F6',
-            "header_background_color": data.primaryColor,
+            "header_background_color": '#FFFFFF',
             "text_color1": '#808080',
-            "text_color2": '#FFFFFF',
+            "text_color2": '#808080',
             "link_color": '#00B3E6',
             "primary_button_color": bcolor,
             "primary_button_text_color": tcolor,
@@ -96,12 +97,25 @@ module.exports = {
 
         var options = {
             name: data.company,
-            domain: process.env.DOMAIN, //pass this env var, or change this to hosting url (do not include protocol)
-            callback_url: process.env.CALLBACK_URL, //pass this env var, or change this too, but do include protocol and the /callback
+            test_mode:1,
+            domain: 'hellosigndemo.finsweet.com',
+            callback_url: 'http://hellosigndemo.finsweet.com/callback',
             white_labeling_options: JSON.stringify(wlabel)
         };
 
-        console.log(options);
+        if(data.logo.match('img')){
+            options['white_labeling_options'] = "";
+        }else{
+            options.custom_logo_file = fs.createReadStream(rootpath+'/'+data.logo);
+        }
+
+        var multipart = [];
+        var ks = Object.keys(options);
+        ks.map(function(k){
+            var obj = {};
+            obj[k]=options[k];
+            multipart.push(obj)
+        });
 
         request({
             method: 'POST',
@@ -120,23 +134,6 @@ module.exports = {
                 cb(dat);
             }
         });
-
-        /*hellosign.apiApp.create(options)
-         .then(function(response){
-         console.log(response);
-         cb(response);
-         })
-         .catch(function(err){
-         hellosign.apiApp.create(options)
-         .then(function(response){
-         console.log(response);
-         cb(response);
-         })
-         .catch(function(err) {
-         console.log(err);
-         })
-         })*/
-
     }
 
 };

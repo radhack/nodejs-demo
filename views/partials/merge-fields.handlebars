@@ -1,0 +1,222 @@
+<div class="step1 col-xs-12">
+
+    <div class="merge-fields">
+
+        <div class="text">
+            This showcases the option to fill in data manually that couldn’t be pulled from your company’s databases.
+            <br/>
+        </div>
+
+        <br/>
+
+        <div class="people">
+
+            <h4>Signature Request</h4>
+            <div class="interim">
+                From 2017 Company Handbook Template > Existing Contact
+            </div>
+            <br/>
+            <h4 class="existing-contact">Select from existing contacts</h4>
+            <div class="contacts">
+                <div class="contact">
+                    <div class="portrait" style="background:url('/img/emp1.jpg') center no-repeat; background-size: contain;"></div>
+                    <div class="name">Alejandra Perea</div>
+                </div>
+                <div class="contact">
+                    <div class="portrait" style="background:url('/img/emp2.jpg') center no-repeat; background-size: contain;"></div>
+                    <div class="name">Gary Lin</div>
+                </div>
+                <div class="contact">
+                    <div class="portrait" style="background:url('/img/emp3.jpg') center no-repeat; background-size: contain;"></div>
+                    <div class="name">Rory Calhoun</div>
+                </div>
+                <div class="contact">
+                    <div class="portrait" style="background:url('/img/emp4.jpg') center no-repeat; background-size: contain;"></div>
+                    <div class="name">Tamara Simmons</div>
+                </div>
+                <div class="contact">
+                    <div class="portrait" style="background:url('/img/emp5.jpg') center no-repeat; background-size: contain;"></div>
+                    <div class="name">Todd Henry</div>
+                </div>
+            </div>
+
+        </div>
+
+        <br/>
+        <br/>
+
+        <div class="text">
+            First, let’s pull Alejandra’s information.
+        </div>
+        <br/>
+        <div class="btn btn-default pull-left cta" onclick="pull()">Pull Information</div>
+
+        <div class="modal fade" id="mergeFieldsModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <button style="margin-right:10px;" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <div class="body row">
+                            <h4 style="padding-left:40px;">Signature Request</h4>
+                            <div class="interim" style="padding-left:40px;">
+                                From 2017 Company Handbook Template > Existing Contact
+                            </div>
+                            <br/>
+                            <div class="mergeFields" style="margin-left:40px">
+                                <div class="row">
+                                    <div class="col-sm-3"><label>Name</label></div>
+                                    <div class="col-sm-9"><input class="disabled" id="name" value="Alejandra Perea" disabled/></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3"><label>Email Address</label></div>
+                                    <div class="col-sm-9"><input class="disabled" id="email" value="alejandra.perea@hellosign.com" disabled/></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3"><label>Start Date</label></div>
+                                    <div class="col-sm-9"><input class="disabled" id="date" value="12/05/2015" disabled/></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3"><label>Position</label></div>
+                                    <div class="col-sm-9"><input class="" id="position" value="Regional Programs Manager"/></div>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="btn btn-default pull-left cta sendMergeFields" style="margin-left:40px;margin-bottom:30px;" onclick="merge()">Skip Preview & Send</div>
+
+                            <div class="btn btn-default pull-right cta previewMergeFields" style="margin-left:40px;margin-bottom:30px;" onclick="preview()">Preview & Edit</div>
+                            <br/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $('#mergeFieldsModal').modal({show:false, backdrop:false});
+
+        function pull(){
+            $('#mergeFieldsModal').modal().show();
+        }
+
+        function merge(){
+            $('#mergeFieldsModal').modal().hide();
+
+            swal({
+                title: "Working..",
+                text: "Sending signature request with merged fields..",
+                imageUrl: "/img/ripple.gif",
+                showConfirmButton:false
+            });
+
+            var form = $('#mergeFieldsModal .mergeFields');
+
+            var data = {
+                name:form.find('#name').val().trim(),
+                position:form.find('#position').val().trim(),
+                start:form.find('#date').val().trim(),
+                email:form.find('#email').val().trim()
+            };
+
+            console.log(data);
+
+            $.ajax({
+                type:'POST',
+                url:'/mergeFields',
+                data:data,
+                success: function(response){
+
+                    console.log(response);
+
+                    if(response.statusMessage=='OK'){
+
+                        swal.close();
+                        $('.step1').addClass('hidden');
+                        $('.step2').removeClass('hidden');
+
+                    }
+                },
+                error: function(err){
+                    console.log(err);
+                }
+            });
+
+        }
+
+        function preview(){
+
+            $('#mergeFieldsModal').modal().hide();
+
+            swal({
+                title: "Working..",
+                text: "Please wait while we set up the preview..",
+                imageUrl: "/img/ripple.gif",
+                showConfirmButton:false
+            });
+
+            var form = $('#mergeFieldsModal .mergeFields');
+
+            var data = {
+                name:form.find('#name').val().trim(),
+                position:form.find('#position').val().trim(),
+                start:form.find('#date').val().trim(),
+                email:form.find('#email').val().trim()
+            };
+
+            $.ajax({
+                type:'POST',
+                url:'/previewMergeFields',
+                data:data,
+                success: function(response) {
+
+                    HelloSign.open({
+                        url: response.unclaimed_draft.claim_url,
+                        container:document.getElementById('previewMergeContainer'),
+                        allowCancel: true,
+                        messageListener: function(eventData) {
+                            console.log(eventData);
+                            if(eventData.event=='signature_request_sent'){
+                                $('.step15').addClass('hidden');
+                                $('.step2').removeClass('hidden');
+                            }
+                        }
+                    });
+
+                    $('.step1').addClass('hidden');
+                    $('.step15').removeClass('hidden');
+
+                    swal.close();
+
+                    $('#hsEmbeddedFrame').css('width','100%');
+                    $('#hsEmbeddedFrame').css('height','100%');
+
+                }
+            });
+        }
+
+    </script>
+
+</div>
+
+<div class="step15 hidden col-sm-12" style="padding-left:0 !important;">
+    <div id="previewMergeContainer"></div>
+</div>
+
+<div class="step2 hidden col-sm-12">
+    <div class="successBox">
+        <div>
+            <img class="check" src="/img/success-button.png"/>
+            <div class="text">Your document has been successfully sent.</div>
+        </div>
+    </div>
+    <br/>
+    <div class="btn btn-default cta middle" onclick="next()">Next: Dashboard View</div>
+</div>
+
+<script>
+
+    function next(){
+        window.location.href = '/{{profile.url}}/dashboard';
+    }
+
+</script>

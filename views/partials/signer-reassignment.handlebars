@@ -1,0 +1,58 @@
+<script>
+
+    swal({
+        title: "Working..",
+        text: "Please wait while we set up the form..",
+        imageUrl: "/img/ripple.gif",
+        showConfirmButton:false
+    });
+
+    $.ajax({
+        type:'POST',
+        url:'/getEmbeddedReassign',
+        success: function(response) {
+
+            console.log(response);
+
+            HelloSign.open({
+                url: response.embedded.sign_url,
+                container:document.getElementById('embeddedSigningReassign'),
+                allowCancel: true,
+                uxVersion: 2,
+                messageListener: function(eventData) {
+                    console.log(eventData);
+
+                    if(eventData.event=='signature_request_signed'){
+                        $('.step1').addClass('hidden');
+                        $('.step2').removeClass('hidden');
+                    }
+                }
+            });
+
+            swal.close();
+
+            $('#hsEmbeddedFrame').css('width','100%');
+            $('#hsEmbeddedFrame').css('height','100%');
+
+        }
+    });
+
+    function next(){
+        window.location.href = '/{{profile.url}}/embedded-templates';
+    }
+</script>
+
+<div class="step1">
+    <div id="embeddedSigningReassign"></div>
+</div>
+
+<div class="step2 hidden col-sm-12">
+    <div class="successBox">
+        <div>
+            <img class="check" src="/img/success-button.png"/>
+            <div class="text">Your document has been successfully signed.</div>
+        </div>
+    </div>
+    <br/>
+    <div class="btn btn-default cta middle" onclick="next()">Next: Embedded Templates</div>
+</div>

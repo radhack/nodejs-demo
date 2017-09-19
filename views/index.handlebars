@@ -61,25 +61,6 @@
                     <label for="primaryManual">Dark Company Color (optional)</label>
                     <input type="text" class="form-control" name="darkManual" id="darkManual" placeholder="Hex Color" style="display:inline-block;width:200px;position:relative;right:0;">
                 </div>
-
-                <!--
-                <div class="form-group ccontrol">
-                    <input type="text" class="form-control" id="headerbgcolor" placeholder="Header Background Color">
-                    <label for="headerbgcolor">Header Background Color</label>
-                </div>
-                <div class="form-group ccontrol">
-                    <input type="text" class="form-control" id="textcolor" placeholder="Text Color On Header">
-                    <label for="textcolor">Text Color On Header</label>
-                </div>
-                <div class="form-group ccontrol">
-                    <input type="text" class="form-control" id="buttoncolor" placeholder="Button Color">
-                    <label for="buttoncolor">Button Color</label>
-                </div>
-                <div class="form-group ccontrol">
-                    <input type="text" class="form-control" id="linkcolor" placeholder="Highlight/Link Color">
-                    <label for="linkcolor">Highlight/Link Color</label>
-                </div>
-                -->
                 <button id="proceed" type="submit" class="btn btn-default">Submit</button>
             </form>
         </div>
@@ -90,31 +71,6 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.js"></script>
-
-<!--
-<script>
-    $("#headerbgcolor").spectrum({
-        preferredFormat: "hex",
-        showInput: true,
-        color: "#FFF"
-    });
-    $("#textcolor").spectrum({
-        preferredFormat: "hex",
-        showInput: true,
-        color: "#000"
-    });
-    $("#buttoncolor").spectrum({
-        preferredFormat: "hex",
-        showInput: true,
-        color: "#999"
-    });
-    $("#linkcolor").spectrum({
-        preferredFormat: "hex",
-        showInput: true,
-        color: "#47f"
-    });
-</script>
--->
 
 <script>
     Dropzone.autoDiscover = false;
@@ -250,10 +206,6 @@
             formData.append("email", $("#email").val());
             formData.append("colorPrimaryManual", $("#primaryManual").val());
             formData.append("colorDarkManual", $("#darkManual").val());
-            //formData.append("headerbgcolor", $('#headerbgcolor').spectrum('get').toHexString());
-            //formData.append("textcolor", $('#textcolor').spectrum('get').toHexString());
-            //formData.append("buttoncolor", $('#buttoncolor').spectrum('get').toHexString());
-            //formData.append("linkcolor", $('#linkcolor').spectrum('get').toHexString());
             $('input:checkbox:checked').map(function() {
                 formData.append("usage", this.value);
             });

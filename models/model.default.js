@@ -28,10 +28,11 @@ defaults.findOne({_id:'defaultSettings'}, function(err, doc){
         var initTemplates = new defaults({
             _id:'defaultSettings',
             mergeTemplate:{
-                templateId:'467a06a019637c331ca609a7763ff826674da496',
+                templateId:'d89b39bd48d91a493286c961aafe69323b86a0d2',
+                //templateId:'467a06a019637c331ca609a7763ff826674da496',
                 category:[],
                 name:'Updated Employee Agreement',
-                filename:'employment-agreement.pdf',
+                filename:'employment-agreement-updated.pdf',
                 finalized:true
             },
             embeddedTemplate:{

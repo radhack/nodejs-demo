@@ -1,0 +1,498 @@
+<div class="step1 {{#if profile.custom}}hidden{{else}}{{/if}} col-xs-12 col-md-8">
+    <p class="embedded-templates-top-text">
+        Embedded templates empower users to create and save document templates for repeated use on your website, application, or workflow.
+        <br/>
+        <br/>
+        Let's walk through creating a template
+    </p>
+    <br/>
+    <div class="col-xs-12" style="margin-left:0;">
+        <form id="embeddedTemplateForm" style="padding-left:25px;" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="name">Name the template</label>
+                <input type="text" class="form-control" name="name" id="name" placeholder="Template Name">
+            </div>
+
+            <div class="form-group">
+                <label for="template">Upload a document file</label>
+                <div class='dropzone' id="template"></div>
+            </div>
+            <div style="font-size:12px;">
+                Or leave it blank to use a sample HR document
+            </div>
+            <br/>
+            <div class="form-group">
+                <label>Add the roles that need to sign</label>
+                <br/>
+                <label class="small-label">Who needs to sign?</label>
+                <input type="text" class="form-control roles" placeholder="Signing Role (Manager, Client, etc.)">
+                <div class="addRole">
+                                <span class="icon">
+                                    <span class="fa-stack">
+                                      <i class="fa fa-plus fa-stack-1x"></i>
+                                      <i class="fa fa-circle-thin fa-stack-2x"></i>
+                                    </span>
+                                </span>
+                    <span class="text">Add Role</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Add a message</label>
+                <input type="text" class="form-control" name="subject" id="subject" placeholder="Email subject for template"/>
+                <textarea class="form-control" style="margin-top:20px;" rows="5" name="body" id="body" placeholder="Email body message for template"></textarea>
+            </div>
+
+            <button id="proceed" type="submit" class="btn btn-default pull-left">Submit</button>
+        </form>
+    </div>
+    <script>
+        Dropzone.autoDiscover = false;
+
+        form = $('#embeddedTemplateForm');
+
+        $('.addRole').click(function(){
+            $('<div style="position:relative;"><input type="text" class="form-control roles" style="margin-top:10px;" placeholder="Signing Role (Manager, Client, etc.)"><div class="removeRole"><i class="fa fa-times"></i></div></div>').insertBefore($(this));
+            $('.removeRole').click(function(){
+                console.log('clicked');
+                $(this).parent().remove();
+            });
+        });
+
+        $('.removeRole').click(function(){
+            console.log('clicked');
+            $(this).parent().remove();
+        });
+
+        $(document).ready(function(){
+            var myDropzone = new Dropzone(".dropzone", {
+                url: '/embeddedTemplates',
+                autoProcessQueue: false,
+                addRemoveLinks: true,
+                paramName:'file',
+                dictDefaultMessage:'Upload document',
+                thumbnailWidth:null,
+                init: function() {
+                }}
+            );
+
+            $("#proceed").click(function(e) {
+
+                console.log('Submitting..');
+                e.preventDefault();
+                e.stopPropagation();
+
+                if(!myDropzone.files.length){
+
+                    var data = {};
+
+                    data.name = form.find('#name').val().trim();
+                    data.subject = form.find('#subject').val().trim();
+                    data.message = form.find('#body').val().trim();
+
+                    data.roles = [];
+                    form.find('.roles').toArray().map(function(obj,i){
+                        data.roles.push($(obj).val().trim());
+                    });
+
+                    data.ccroles = [];
+                    form.find('.ccroles').toArray().map(function(obj,i){
+                        data.ccroles.push($(obj).val().trim());
+                    });
+
+                    console.log(data);
+
+                    swal({
+                        title: "Working..",
+                        text: "Please wait while we set up the template..",
+                        imageUrl: "/img/ripple.gif",
+                        showConfirmButton:false
+                    });
+
+                    $.ajax({
+                        type:'POST',
+                        url:'/embeddedTemplates',
+                        data:data,
+                        success: function(response){
+
+                            swal({
+                                type:'success',
+                                title: "Done!",
+                                text: "You can now edit the template",
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+
+                            if(response.statusMessage=='OK'){
+                                $('.step1').addClass('hidden');
+                                $('.step2').removeClass('hidden');
+
+                                HelloSign.open({
+                                    url: response.template['edit_url'],
+                                    container:document.getElementById('embeddedTemplatesContainer'),
+                                    allowCancel: true,
+                                    messageListener: function(eventData) {
+                                        if(eventData.event=='template_created'){
+                                            $('.step2').addClass('hidden');
+                                            $('.step3').removeClass('hidden');
+
+                                            $.ajax({
+                                                type:'POST',
+                                                url:'/getCustomTemplates',
+                                                data:{id:eventData.template_id},
+                                                success: function(response){
+                                                    $('.step3 .tab-main').html('');
+                                                    response.map(function(obj){
+                                                        $('.step3 .tab-main').append('<div class="row">'+
+                                                                '<div class="col-xs-3">'+obj.name+'</div>'+
+                                                                '<div class="col-xs-3">'+obj.filename+'</div>'+
+                                                                '<div class="col-xs-4"><div class="btn btn-default cta" data-name="'+obj.name+'" data-id="'+obj.templateId+'" onclick="requestSign(this)">Request Signature</div></div>'+
+                                                                '</div>')
+                                                    })
+                                                }
+                                            })
+                                        }else{
+                                            swal({
+                                                type:'error',
+                                                title: "Uh oh!",
+                                                text: "An error has occurred. Please try again.",
+                                                timer: 2000,
+                                                showConfirmButton: false
+                                            }, function(){
+                                                $('.step2').addClass('hidden');
+                                                $('.step1').removeClass('hidden');
+                                            });
+                                        }
+                                    }
+                                });
+                                $('#hsEmbeddedFrame').css('width','100%');
+                                $('#hsEmbeddedFrame').css('height','100%');
+                            }
+                        }
+                    });
+                }else{
+                    myDropzone.processQueue();
+                }
+            });
+
+            //Send all the form data along with the files:
+            myDropzone.on("sending", function(data, xhr, formData) {
+                var name = form.find('#name').val().trim();
+                var subject = form.find('#subject').val().trim();
+                var message = form.find('#body').val().trim();
+
+                var roles = [];
+                form.find('.roles').toArray().map(function(obj,i){
+                    roles.push($(obj).val());
+                });
+
+                var ccroles = [];
+                form.find('.ccroles').toArray().map(function(obj,i){
+                    ccroles.push($(obj).val().trim());
+                });
+
+                formData.append('name', name);
+                formData.append('subject', subject);
+                formData.append('message', message);
+                formData.append('roles',roles);
+                formData.append('ccroles',ccroles);
+
+                swal({
+                    title: "Working..",
+                    text: "Please wait while we set up the template..",
+                    imageUrl: "/img/ripple.gif",
+                    showConfirmButton:false
+                });
+
+            });
+
+            myDropzone.on('complete', function(a,b){
+
+                var response = JSON.parse(a.xhr.response);
+                console.log(response);
+
+                swal({
+                    type:'success',
+                    title: "Done!",
+                    text: "You can now edit the template",
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+
+                $('.step1').addClass('hidden');
+                $('.step2').removeClass('hidden');
+
+                HelloSign.open({
+                    url: response.template['edit_url'],
+                    container:document.getElementById('embeddedTemplatesContainer'),
+                    allowCancel: true,
+                    messageListener: function(eventData) {
+                        if(eventData.event=='template_created'){
+                            $('.step2').addClass('hidden');
+                            $('.step3').removeClass('hidden');
+
+                            $.ajax({
+                                type:'POST',
+                                url:'/getCustomTemplates',
+                                data:{id:eventData.template_id},
+                                success: function(response){
+                                    $('.step3 .tab-main').html('');
+                                    response.map(function(obj){
+                                        $('.step3 .tab-main').append('<div class="row">'+
+                                                '<div class="col-sm-3">'+obj.name+'</div>'+
+                                                '<div class="col-sm-3">'+obj.filename+'</div>'+
+                                                '<div class="col-sm-4"><div class="btn btn-default cta" data-name="'+obj.name+'" data-id="'+obj.templateId+'" onclick="requestSign(this)">Request Signature</div></div>'+
+                                                '</div>')
+                                    })
+                                }
+                            })
+                        }else{
+                            swal({
+                                type:'error',
+                                title: "Uh oh!",
+                                text: "An error has occurred. Please try again.",
+                                timer: 2000,
+                                showConfirmButton: false
+                            }, function(){
+                                $('.step2').addClass('hidden');
+                                $('.step1').removeClass('hidden');
+                            });
+                        }
+                    }
+                });
+                $('#hsEmbeddedFrame').css('width','100%');
+                $('#hsEmbeddedFrame').css('height','100%');
+            })
+        });
+
+    </script>
+</div>
+
+<div class="step2 hidden">
+    <div id="embeddedTemplatesContainer"></div>
+</div>
+
+<div class="step3 {{#if profile.custom}}{{else}}hidden{{/if}}">
+    <div class="tab-body custom-templates">
+        <div class="tab-body-title custom-templates">Custom Templates</div>
+        <div class="row labels tab-label-row">
+            <div class="col-sm-3">Document Name</div>
+            <div class="col-sm-3">File Name</div>
+        </div>
+        <div class="tab-main"></div>
+        <br/>
+        <br/>
+        <div class="row">
+            <div class="btn btn-default cta pull-left" style="width:250px" onclick="newTemplate()">Create a new template</div>
+        </div>
+    </div>
+    <script>
+        function newTemplate(){
+            $('.step3').addClass('hidden');
+            $('.step1').removeClass('hidden');
+        }
+    </script>
+    {{#if profile.custom}}
+        <script>
+            $.ajax({
+                type:'POST',
+                url:'/getCustomTemplates',
+                data:{id:""},
+                success: function(response){
+                    response.map(function(obj){
+                        $('.step3 .tab-main').append('<div class="row">'+
+                                '<div class="col-sm-3 template-file-text">'+obj.name+'</div>'+
+                                '<div class="col-sm-3 template-file-text">'+obj.filename+'</div>'+
+                                '<div class="col-sm-4"><div class="btn btn-default cta" data-name="'+obj.name+'" data-id="'+obj.templateId+'" onclick="requestSign(this)">Request Signature</div></div>'+
+                                '</div>')
+                    })
+                }
+            })
+        </script>
+    {{/if}}
+
+    <div class="modal fade" id="signersModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <div class="main row">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div><label for="" class="title"></label></div>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div><label for="">Subject</label></div>
+                                <div><input type="text" class="subject" style="width:100%"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div><label for="">Message</label></div>
+                                <div><textarea rows="3" class="message" style="width:100%"></textarea></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="body row">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default cta">Send Request</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        $('#signersModal').modal({show:false, backdrop:false});
+        function requestSign(e){
+
+            $('#signersModal .body').html("");
+
+            var name = $(e).attr('data-name');
+
+            swal({
+                title: "Working..",
+                text: "Getting template fields..",
+                imageUrl: "/img/ripple.gif",
+                showConfirmButton:false
+            });
+
+            $('#signersModal .main .title').html(name);
+
+            var tid = $(e).attr('data-id');
+
+            $('#signersModal .cta').attr('data-tid',tid);
+
+            $.ajax({
+                type:'POST',
+                url:'/fromTemplate',
+                data:{templateId:tid},
+                success: function(response){
+
+                    swal.close();
+
+                    if(response.statusMessage=='OK'){
+                        response.template.signer_roles.map(function(sr){
+                            $('#signersModal .body').append('<div class="signer">' +
+                                    '<div class="row" style="padding-top:20px; margin-bottom:-10px!important;"><div class="col-sm-4">Role: </div><div class="col-sm-4 role">'+sr.name+'</div></div><br/>' +
+                                    '<div class="row"><div class="col-sm-4"><label>Signer Name:</label></div><div class="col-sm-4"><input type="text" class="name"/></div></div>' +
+                                    '<div class="row"><div class="col-sm-4"><label>Signer Email:</label></div><div class="col-sm-4"><input type="text" class="email"/></div></div><br/>' +
+                                    '</div>')
+                        });
+
+                        $('#signersModal').modal('show')
+
+                    }
+                }
+            });
+        };
+
+        $('#signersModal .cta').click(function() {
+
+            var tid = $(this).attr('data-tid');
+
+            var data = {
+                templateId:tid,
+                title : $('#signersModal .main .title').html(),
+                subject : $('#signersModal .main .subject').val().trim(),
+                message : $('#signersModal .main .message').val().trim()
+            };
+
+            var signers = [];
+
+            var proceed = true;
+
+            $('#signersModal .body .signer').toArray().map(function(obj){
+
+                if(!$(obj).find('.name').val().trim()){
+                    proceed=false;
+                    !$(obj).find('.name').addClass('attention')
+                }
+
+                if(!$(obj).find('.email').val().trim()){
+                    proceed=false;
+                    !$(obj).find('.email').addClass('attention')
+                }
+
+                signers.push({
+                    role: $(obj).find('.role').text().trim(),
+                    name: $(obj).find('.name').val().trim(),
+                    email_address: $(obj).find('.email').val().trim()
+                })
+            });
+
+            data.signers = signers;
+            data.category = "custom";
+
+            if (!data.subject) {
+                proceed = false;
+                $('#signersModal .main .subject').addClass('attention')
+            }
+
+            if (!data.message) {
+                proceed = false;
+                $('#signersModal .main .message').addClass('attention')
+            }
+
+            if (proceed) {
+
+                $('#signersModal').modal('hide');
+
+                setTimeout(function () {
+                    swal({
+                        title: "Sending..",
+                        text: "We are sending your signature request",
+                        imageUrl: "/img/ripple.gif",
+                        showConfirmButton: false
+                    });
+                }, 300);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/sendRequestFromTemplate',
+                    data: data,
+                    success: function (response) {
+
+                        console.log(response);
+
+                        if (response.statusMessage == 'OK') {
+
+                            swal.close();
+                            $('.step3').addClass('hidden');
+                            $('.step4').removeClass('hidden');
+
+                        }
+                    }
+                });
+
+            } else {
+                //Nothing
+            }
+        });
+
+    </script>
+</div>
+
+<div class="step4 hidden col-sm-12">
+    <div class="successBox">
+        <div>
+            <img class="check" src="/img/success-button.png"/>
+            <div class="text">Your document has been successfully sent.</div>
+        </div>
+    </div>
+    <br/>
+    <div class="btn btn-default cta middle" onclick="back()">Return to embedded templates</div>
+</div>
+
+<script>
+    function back(){
+        $('.step4').addClass('hidden');
+        $('.step3').removeClass('hidden');
+    }
+</script>

@@ -1,0 +1,282 @@
+<div class="step1">
+    <!-- Tabs -->
+    {{#if profile.hr}}
+        <div class="tab-header col-sm-{{profile.tabs}}" data-cat="hr">
+            <div>
+                HR Documents
+            </div>
+        </div>
+    {{/if}}
+
+    {{#if  profile.realestate}}
+        <div class="tab-header col-sm-{{profile.tabs}}" data-cat="realestate">
+            <div>
+                Real Estate Documents
+            </div>
+        </div>
+    {{/if}}
+
+    {{#if profile.legal}}
+        <div class="tab-header col-sm-{{profile.tabs}}" data-cat="legal">
+            <div>
+                Legal Documents
+            </div>
+        </div>
+    {{/if}}
+
+    <!-- Tab Body -->
+
+    {{#if profile.hr}}
+        <div class="tab-body hr-tab hidden">
+            <div class="tab-body-title">Request a signature - HR</div>
+            <div class="row labels tab-label-row">
+                <div class="col-sm-3">Document Name</div>
+                <div class="col-sm-3">File Name</div>
+            </div>
+            {{#each profile.hr}}
+                <div class="row">
+                    <div class="col-sm-3 template-file-text">{{this.name}}</div>
+                    <div class="col-sm-3 template-file-text">{{this.filename}}</div>
+                    <div class="col-sm-4"><div class="btn btn-default cta" data-name="{{this.name}}" data-id="{{this.templateId}}">Request Signature</div></div>                                </div>
+            {{/each}}
+        </div>
+    {{/if}}
+
+    {{#if profile.realestate}}
+        <div class="tab-body realestate-tab hidden">
+            <div class="tab-body-title">Request a signature - Real Estate</div>
+            <div class="row labels tab-label-row">
+                <div class="col-sm-3">Document Name</div>
+                <div class="col-sm-3">File Name</div>
+            </div>
+            {{#each profile.realestate}}
+                <div class="row">
+                    <div class="col-sm-3 template-file-text">{{this.name}}</div>
+                    <div class="col-sm-3 template-file-text">{{this.filename}}</div>
+                    <div class="col-sm-4"><div class="btn btn-default cta" data-name="{{this.name}}" data-id="{{this.templateId}}">Request Signature</div></div>
+                </div>
+            {{/each}}
+        </div>
+    {{/if}}
+
+    {{#if profile.legal}}
+        <div class="tab-body legal-tab hidden">
+            <div class="tab-body-title">Request a signature - Legal</div>
+            <div class="row labels tab-label-row">
+                <div class="col-sm-3">Document Name</div>
+                <div class="col-sm-3">File Name</div>
+            </div>
+            {{#each profile.legal}}
+                <div class="row">
+                    <div class="col-sm-3 template-file-text">{{this.name}}</div>
+                    <div class="col-sm-3 template-file-text">{{this.filename}}</div>
+                    <div class="col-sm-4"><div class="btn btn-default cta" data-name="{{this.name}}" data-id="{{this.templateId}}">Request Signature</div></div>                                </div>
+            {{/each}}
+        </div>
+    {{/if}}
+
+    <div class="modal fade" id="signersModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <div class="main row">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div><label for="" class="title"></label></div>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div><label for="">Subject</label></div>
+                                <div><input type="text" class="subject" style="width:100%"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div><label for="">Message</label></div>
+                                <div><textarea rows="3" class="message" style="width:100%"></textarea></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="body row">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default cta">Send Request</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        $('.tab-header').click(function(){
+            var cat = $(this).attr('data-cat');
+            console.log(cat);
+            $('.tab-body').addClass('hidden');
+            $('.tab-header').removeClass('active-tab');
+            $('.'+cat+'-tab').removeClass('hidden');
+            $(this).addClass('active-tab');
+        });
+
+        $('#signersModal').modal({show:false, backdrop:false});
+
+        $($('.tab-header').toArray()[0]).addClass('active-tab');
+        $($('.tab-body').toArray()[0]).removeClass('hidden');
+
+        $('.tab-body .cta').click(function(){
+
+            $('#signersModal .body').html("");
+
+            var name = $(this).attr('data-name');
+
+            console.log(name);
+
+            swal({
+                title: "Working..",
+                text: "Getting template fields..",
+                imageUrl: "/img/ripple.gif",
+                showConfirmButton:false
+            });
+
+            $('#signersModal .main .title').html(name);
+
+            var tid = $(this).attr('data-id');
+
+            $('#signersModal .cta').attr('data-tid',tid);
+
+            $.ajax({
+                type:'POST',
+                url:'/fromTemplate',
+                data:{templateId:tid},
+                success: function(response){
+
+                    swal.close();
+
+                    console.log(response);
+
+                    if(response.statusMessage=='OK'){
+
+                        response.template.signer_roles.map(function(sr){
+
+                            $('#signersModal .body').append('<div class="signer">' +
+                                    '<div class="row" style="padding-top:20px;margin-bottom:-10px!important;"><div class="col-sm-4">Role: </div><div class="col-sm-4 role">'+sr.name+'</div></div><br/>' +
+                                    '<div class="row"><div class="col-sm-4"><label>Signer Name:</label></div><div class="col-sm-4"><input type="text" class="name"/></div></div>' +
+                                    '<div class="row"><div class="col-sm-4"><label>Signer Email:</label></div><div class="col-sm-4"><input type="text" class="email"/></div></div><br/>' +
+                                    '</div>')
+                        });
+
+                        $('#signersModal').modal('show')
+
+                    }
+                }
+            });
+        });
+
+        $('#signersModal .cta').click(function(){
+
+            var tid = $(this).attr('data-tid');
+
+            var data = {
+                templateId:tid,
+                title : $('#signersModal .main .title').html(),
+                subject : $('#signersModal .main .subject').val().trim(),
+                message : $('#signersModal .main .message').val().trim()
+            };
+
+            var signers = [];
+
+            var proceed = true;
+
+            $('#signersModal .body .signer').toArray().map(function(obj){
+
+                if(!$(obj).find('.name').val().trim()){
+                    proceed=false;
+                    !$(obj).find('.name').addClass('attention')
+                }
+
+                if(!$(obj).find('.email').val().trim()){
+                    proceed=false;
+                    !$(obj).find('.email').addClass('attention')
+                }
+
+                signers.push({
+                    role: $(obj).find('.role').text().trim(),
+                    name: $(obj).find('.name').val().trim(),
+                    email_address: $(obj).find('.email').val().trim()
+                })
+            });
+
+            data.signers = signers;
+            data.category = $('.active-tab').attr('data-cat');
+
+            console.log(data);
+
+            if(!data.subject){
+                proceed=false;
+                $('#signersModal .main .subject').addClass('attention')
+            }
+
+            if(!data.message){
+                proceed=false;
+                $('#signersModal .main .message').addClass('attention')
+            }
+
+
+            if(proceed){
+                $('#signersModal').modal('hide');
+
+                setTimeout(function(){
+                    swal({
+                        title: "Sending..",
+                        text: "We are sending your signature request",
+                        imageUrl: "/img/ripple.gif",
+                        showConfirmButton:false
+                    });
+                },300);
+
+                $.ajax({
+                    type:'POST',
+                    url:'/sendRequestFromTemplate',
+                    data:data,
+                    success: function(response){
+
+                        console.log(response);
+
+                        if(response.statusMessage=='OK'){
+
+                            swal.close();
+                            $('.step1').addClass('hidden');
+                            $('.step2').removeClass('hidden');
+
+                        }
+                    }
+                });
+            }else{
+
+            }
+
+        });
+
+    </script>
+</div>
+
+<div class="step2 hidden col-sm-12">
+    <div class="successBox">
+        <div>
+            <img class="check" src="/img/success-button.png"/>
+            <div class="text">Your document has been successfully sent.</div>
+        </div>
+    </div>
+    <br/>
+    <div class="btn btn-default cta middle" onclick="next()">Next: Non-embedded Requests</div>
+</div>
+
+<script>
+    function next(){
+        window.location.href = '/{{profile.url}}/non-embedded-requests';
+    };
+</script>

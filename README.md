@@ -1,53 +1,89 @@
-# nodejs-demo
-API Demo for Hellosign written in NodeJS.
+# HelloSign-API-Demo
 
-## NOTE
-We'll need to decide which HelloSign account's API Key we'll use, and we'll have to create the first app under that
-account and get a client_id (requirement of the project)
+Assuming that you will be deploying this on a clean ubuntu server instance:
 
-## MongoDB
-This integration requires MongoDB, and some environment variables, to operate.
-1. Create a mongodb account on mlab (this is the easiest option, but if you have a mongodb instance up and a user for the db and the url for the host address, you can skip to the AWS Section)
-2. Create a database in mlab
-3. Create a user for the database in mlab
-
-## AWS
-1. Create new linux/fedora instance in aws
-2. ssh into it as the ec2 user
-3. make sure you're in the ~ dir
-4. install node: https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/setting-up-node-on-ec2-instance.html
-5. install git: `sudo yum install git`
-6. clone the repo: `git clone https://github.com/HelloFax/nodejs-demo.git`
-7. cd into the root of the project (where main.js and package.json live), and install cairo: 
-`sudo yum install cairo cairo-devel cairomm-devel libjpeg-turbo-devel pango pango-devel pangomm pangomm-devel giflib-devel`
-Here are the intructions just in case (you can't run just the `npm install cairo` package - the dependancies will break)
-8. install the project dependancies: `npm install`
-9. assuming no errors, you should now be able to spin up the node server. You'll need these env variables:
-   * `MONGO_USER` - username for user created in mlab
-   * `MONGO_PASS` - password for user
-   * `MONGO_HOST` - this is everything after the @ symbol in the host address provided in mlab. For example, if the URL is,  `mongodb://<dbuser>:<dbpassword>@ds157723.mlab.com:57723/hellosign`, `MONGO_HOST` would be `ds157723.mlab.com:57723/hellosign`
-   * `HELLO_KEY` Hellosign API key
-   * `HELLO_ID` Hellosign API app client ID
-   * `DOMAIN` url where the project's hosted - ex: mysite.com (do not use the protocol)
-   * `CALLBACK_URL` fully qualified url + /callback - ex: http://mysite.com/callback (so for this one, you DO use the http protocol)
-   * `PORT` (optional) the port that you'll run locally. It's set in main.js as 9000 by default.
-   
-so it'd be something like: `MONGO_USER=adminherp MONGO_PASS=adminderp MONGO_HOST=ds115124.mlab.com:15124/derpnode HELLO_KEY=[API_KEY_HERE] HELLO_ID=[CLIENT_ID_HERE] DOMAIN=mysite.com CALLBACK_URL=http://mysite.com/callback node main.js`
-
-10. Map the port 80 to the port you used (9000 again is the default)
-
---- these are the original instructions for Heroku, which do not work since cairo cannot run on Heroku ---
-## Install (this is busted because of a package resourse called cairo, which won't run on heroku for some reason)
-1. Create a Heroku account
-1. Create a mongodb account on mlab
-1. Create a database
-1. Create a user for the database (edited)
-1. Create a heroku app
-1. Add the following environment variables :
-  1. `MONGO_USER` - username for user created in mlab
-  1. `MONGO_PASS` - password for user
-  1. `MONGO_HOST` - this is everything after the @ symbol in the host address provided in mlab. For example, if the URL is,  `mongodb://<dbuser>:<dbpassword>@ds157723.mlab.com:57723/hellosign`, `MONGO_HOST` would be `ds157723.mlab.com:57723/hellosign`
-  1. `HELLO_KEY` Hellosign API key
-  1. `HELLO_ID` Hellosign API app client ID
-1. Deploy app
-1. Set the callback URL to the Heroku app in the Hellosign API app settings
+1. `sudo apt-get update`
+1. Install git: `sudo apt-get install git`
+1. Install node package manager: `sudo apt-get install npm`
+1. Update node package manager: `sudo npm i npm`
+1. Install node version manager: `sudo npm i -g n`
+1. Install nodejs: `sudo n 6.11.2` 
+1. Set up mongodb:
+    1. If you're going to be using a local instance of mongodb install it using the instructions at the following link: https://tecadmin.net/install-mongodb-on-ubuntu/
+    1. For an mlab deployment of mongodb add in the following environment variables :
+        1. `MONGO_USER` - username for user created in mlab
+        1. `MONGO_PASS` - password for user
+        1. `MONGO_HOST` - this is everything after the @ symbol in the host address provided in mlab. For example, if the URL is,  `mongodb://<dbuser>:<dbpassword>@ds157723.mlab.com:57723/hellosign`, `MONGO_HOST` would be `ds157723.mlab.com:57723/hellosign`
+1. Set environment variables for Hellosign API
+    1. `HELLO_KEY` Hellosign API key
+    1. `HELLO_ID` Hellosign API app client ID
+1. Install dependencies for color-thief package: `sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++`
+1. Clone github repository: `git clone https://github.com/HelloFax/nodejs-demo.git`
+1. Install node packages: `sudo npm i`
+1. Install nginx: `sudo apt-get install nginx`
+1. Configure nginx as reverse proxy:
+    1. Open up default configuration file at `\etc\nginx\sites-available\default`
+    1. Paste in the following configuration after adding in domain name:
+    ```
+       server {
+            listen 80 default_server;
+            listen [::]:80 default_server ipv6only=on;
+           
+            server_name <INSERT DOMAIN NAME HERE>;
+           
+            location / {
+           
+                 proxy_set_header        Host $host;
+                 proxy_set_header        X-Real-IP $remote_addr;
+                 proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+                 proxy_set_header        X-Forwarded-Proto $scheme;
+           
+                 proxy_pass          http://localhost:8000;
+                 proxy_read_timeout  90;
+           
+                 proxy_redirect      http://localhost:8000 <INSERT FULL HTTPS ADDRESS HERE>;
+            }
+        }
+        
+       server {
+        
+            listen 443;
+            server_name <INSERT DOMAIN NAME HERE>;
+        
+            ssl_certificate           /etc/letsencrypt/live/<INSERT DOMAIN NAME HERE>/fullchain.pem;
+            ssl_certificate_key       /etc/letsencrypt/live/<INSERT DOMAIN NAME HERE>/privkey.pem;
+        
+            ssl on;
+            ssl_session_cache  builtin:1000  shared:SSL:10m;
+            ssl_protocols  TLSv1 TLSv1.1 TLSv1.2;
+            ssl_ciphers HIGH:!aNULL:!eNULL:!EXPORT:!CAMELLIA:!DES:!MD5:!PSK:!RC4;
+            ssl_prefer_server_ciphers on;
+        
+            access_log            /var/log/nginx/jenkins.access.log;
+        
+            location / {
+        
+                  proxy_set_header        Host $host;
+                  proxy_set_header        X-Real-IP $remote_addr;
+                  proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+                  proxy_set_header        X-Forwarded-Proto $scheme;
+            
+                  proxy_pass          http://localhost:8000;
+                  proxy_read_timeout  90;
+            
+                  proxy_redirect      http://localhost:8000 <INSERT FULL HTTPS ADDRESS HERE>;
+            }
+       }
+    ```
+    iii. Test nginx configuration with `nginx -t` and restart nginx 
+1. Install certbot and set up certificates:
+    1. `sudo add-apt-repository ppa:certbot/certbot`
+    1. `sudo apt-get update`
+    1. `sudo apt-get install python-certbot-nginx`
+    1. `sudo certbot --nginx -d <INSERT DOMAIN NAME HERE>`
+1. Setup automatic certificate renewal:
+    1. `sudo crontab -e`
+    1. Add the following line: `15 3 * * * /usr/bin/certbot renew --quiet`
+1. Install npm process manager: `sudo npm i -g pm2`
+1. Navigate to hellosign nodejs-demo folder and start app with pm2: `pm2 start main.js --name <INSERT PROCESS NAME HERE>`
+    1. You can restart the app now using `pm2 restart <PROCESS NAME>` and view streaming logs using `pm2 logs <PROCESS NAME>`

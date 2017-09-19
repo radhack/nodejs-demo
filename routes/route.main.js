@@ -5,6 +5,7 @@ var defaults = require('../models/model.default');
 var path = require('path');
 var multer = require('multer');
 var moment = require('moment');
+var tinycolor = require('tinycolor2');
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -27,8 +28,6 @@ module.exports = function(router){
 
     router.route('/submit')
         .post(upload.single('logo'), function(req, res){
-
-            console.log(req.body);
 
             var data = req.body;
             if(req.file){
@@ -89,16 +88,26 @@ module.exports = function(router){
                         profile.hr = [];
                         profile.realestate = [];
                         profile.legal = [];
+                        profile.custom = [];
 
                         profile.hr_requests = [];
                         profile.realestate_requests = [];
                         profile.legal_requests = [];
                         profile.custom_requests = [];
 
-                        if (profile.templates.length)
-                            profile.custom = true;
+                        var filteredTMP = [];
 
-                        console.log(profile);
+                        profile.templates.map(function(obj){
+                            if(obj.finalized)
+                                filteredTMP.push(obj)
+                        });
+
+                        profile.templates = filteredTMP;
+
+                        if (profile.templates.length)
+                            profile.custom = profile.templates;
+
+                        profile.primaryRGBA = tinycolor(profile.primaryColor).setAlpha(0.08).toRgbString();
 
                         profile.tabs = 12 / profile.usage.length;
 
@@ -134,11 +143,10 @@ module.exports = function(router){
                         if(page == 'embedded-templates')
                             data.profile.headerMoreInfo = 'Learn about Embedded Templates';
 
-                        if(page=='status'){
+                        if(page=='status' || page=='welcome'){
 
                             hellosign.getAllStatuses(profile.requests, function(statuses){
 
-                                //console.log(statuses);
                                 var index = {};
 
                                 profile.requests.map(function(rq){
@@ -155,7 +163,8 @@ module.exports = function(router){
                                 statuses.map(function(st){
                                     var obj = st.signature_request;
 
-                                    //console.log(obj.signatures)
+                                    obj.name = obj.title;
+                                    obj.filename = obj.title.toLowerCase().replace(' ','_')+'.pdf';
 
                                     obj.names = '';
                                     obj.signatures.map(function(sig){
@@ -177,12 +186,22 @@ module.exports = function(router){
                                         obj.icon='/img/pending.png';
                                     }
 
-                                    var crt = moment.unix(index[obj.signature_request_id].created);
+                                    if(index[obj.signature_request_id])
+                                        var crt = moment.unix(index[obj.signature_request_id].created);
+                                    else
+                                        var crt = moment();
 
                                     obj.createdMonth = crt.format('MMM').toUpperCase();
                                     obj.createdDate = crt.format('DD');
-                                    profile[index[obj.signature_request_id].dst].push(obj);
+
+                                    if(index[obj.signature_request_id])
+                                        profile[index[obj.signature_request_id].dst].push(obj);
                                 });
+
+                                if(profile.custom_requests.length || profile.hr_requests.length || profile.legal_requests.length || profile.realestate_requests.length)
+                                    profile.hasRequests = true;
+                                else
+                                    profile.hasRequests = false;
 
                                 res.render('app-updated', data);
                             });
@@ -212,8 +231,6 @@ module.exports = function(router){
                 data.filename = req.file.originalname;
             }
 
-            console.log(req.file);
-
             data.company = req.headers.referer.split('/')[3];
 
             entity.findOne({url:data.company}, function(err, doc){
@@ -234,16 +251,12 @@ module.exports = function(router){
 
             var url = req.headers.referer.split('/')[3];
 
-            console.log(url);
-
             var data = {
                 url:url,
                 id:req.body.id
             };
 
             hellosign.getCustomTemplates(data, function(response){
-
-                console.log(response);
 
                 res.send(response
                 );
@@ -294,7 +307,6 @@ module.exports = function(router){
 
             hellosign.sendRequestFromTemplate(data, function(response){
                 hellosign.recordRequest(data, response, function(){
-                    console.log(data);
                     res.send(response)
                 });
             })
@@ -359,8 +371,6 @@ module.exports = function(router){
 
             var data = req.body;
 
-            console.log(data);
-
             defaults.findOne({_id:'defaultSettings'}, function(err, doc){
 
                 if(err)
@@ -385,8 +395,6 @@ module.exports = function(router){
         .post(function(req, res){
 
             var data = req.body;
-
-            console.log(data);
 
             defaults.findOne({_id:'defaultSettings'}, function(err, doc){
 

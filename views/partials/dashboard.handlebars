@@ -1,0 +1,103 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.min.js"></script>
+
+<div class=" welcome-body">
+    <div class=" welcome-content-top">
+        <div class="datetime">
+            <div class="today">Today,</div><br/>
+            <div class="date"></div><br/>
+            <div class="location">San Francisco, CA</div>
+        </div>
+        <div class="stats">
+            <div class="welcome-stats-block">
+                <div class="welcome-small-header">ORDERS</div>
+                <div class="welcome-stat-number">158</div>
+            </div>
+            <div class="stats-line-break"></div>
+            <div class="welcome-stats-block">
+                <div class="welcome-small-header">ACTIVE USERS</div>
+                <div class="welcome-stat-number">6,489</div>
+            </div>
+            <div class="stats-line-break"></div>
+            <div class="welcome-stats-block">
+                <div class="welcome-small-header">NEW SIGNUPS</div>
+                <div class="welcome-stat-number">405</div>
+            </div>
+        </div>
+    </div>
+
+    <div class=" welcome-content-bottom">
+        <div class="graph-container linechart">
+            <div class="chart-title line" style="flex-direction:column">
+                <div style="display:flex;flex-direction:row;justify-content: center;align-items: center">
+                    <div class="welcome-small-header with-num" style="margin-right:60px;">HOURLY ACTIVE USAGE</div>
+                    <div class="welcome-stat-number usage-time"> 2:07 PM <span class="welcome-small-header">(PST)</span></div>
+                </div>
+                <br/>
+                <canvas id="myChart" width="400" height="300"></canvas>
+                <script>
+                    var ctx = document.getElementById("myChart").getContext('2d');
+                    var myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {labels:['8AM','9AM','10AM','11AM','12PM','1PM','2PM','3PM','4PM','5PM'],datasets:[{label:'API Calls',data:[100,220,310,140,180,340,230,420,200,130],backgroundColor: '{{profile.primaryColor}}', borderColor:'{{profile.primaryColor}}', fill:false}]},
+                        options: {
+                            responsive: false,
+                            maintainAspectRatio:true,
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero:true
+                                    },
+                                    gridLines: {
+                                        display: true,
+                                        drawBorder: true,
+                                        drawOnChartArea: false
+                                    }
+                                }],
+                                xAxes:[{
+                                    gridLines: {
+                                        display: true,
+                                        drawBorder: true,
+                                        drawOnChartArea: false
+                                    }
+                                }]
+                            }
+                        }
+                    });
+                </script>
+            </div>
+        </div>
+        <div class="graph-container piechart">
+            <div class="chart-title pie" style="flex-direction:column;justify-content: center;align-items: center;width:100%;">
+                <div class="welcome-small-header">DOCUMENTS PROCESSED</div>
+                <br/>
+                <canvas id="pieChart" width="400" height="300"></canvas>
+                <script>
+                    var pie = document.getElementById("pieChart").getContext('2d');
+                    var pieChart = new Chart(pie, {
+                        type: 'doughnut',
+                        data: {
+                            datasets: [{
+                                data: [25,55,20],
+                                backgroundColor: ['orange', '#00A4D1', 'red'],
+                            }],
+                            labels: ["Pending", "Completed", "Declined"]
+                        },
+                        options: {
+                            responsive: true
+                        }
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+    <div class="welcome-footer">
+        <div class="hs-footer-left"><div class="year"></div> HelloSign</div>
+        <div class="hs-footer-right">This is a demo web application to show HelloSign API features, functionalities, and possibilities for your brand.</div>
+    </div>
+</div>
+
+<script>
+    var now = moment();
+    $('.welcome-content-top .datetime .date').html(now.format('MMMM DD'));
+    $('.welcome-footer .hs-footer-right .year').html(now.format('YYYY'));
+</script>

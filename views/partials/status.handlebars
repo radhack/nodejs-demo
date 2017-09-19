@@ -1,0 +1,318 @@
+<div status-main class="status-section">
+
+    <script>
+        reorder = function(id){
+            $('.status-container[data-cat="'+id+'"]').find('br').remove();
+            $('.status-container[data-cat="'+id+'"] .status').sort(function (a, b) {
+                var m1 = $(a).find('.top');
+                var d1 = $(a).find('.bottom');
+                var m2 = $(b).find('.top');
+                var d2 = $(b).find('.bottom');
+                if (moment(m1 + '/' + d1, 'MMM/DD') > moment(m2 + '/' + d2, 'MMM/DD')) {
+                    return -1
+                } else {
+                    return 1
+                }
+            }).each(function () {
+                $('.status-container[data-cat="'+id+'"]').find($(this)).remove();
+                $('.status-container[data-cat="'+id+'"] .status-body').append($(this)).append('<br/>')
+            });
+        }
+    </script>
+
+    {{#if profile.hr}}
+        <div class="status-container" data-cat="hr">
+            <div class="status-header">
+                Document Status | Human Resources
+            </div>
+            <hr/>
+            <div class="status-body">
+
+                <div class="row status">
+                    <div class="col-xs-2 col-sm-1 created">
+                        <div class="top"></div>
+                        <div class="bottom"></div>
+                    </div>
+                    <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                    <div class="col-xs-6 info">
+                        <div class="top">Alex Merceoni</div>
+                        <div class="bottom">Dress Code Policy Update</div>
+                    </div>
+                    <div class="col-sm-4 status-code" style="color:green">Complete</div>
+                </div>
+                <br/>
+                <div class="row status">
+                    <div class="col-xs-2 col-sm-1 created">
+                        <div class="top"></div>
+                        <div class="bottom"></div>
+                    </div>
+                    <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                    <div class="col-xs-6 info">
+                        <div class="top">Jessica Charmini</div>
+                        <div class="bottom">Employment Agreement</div>
+                    </div>
+                    <div class="col-sm-4 status-code" style="color:green">Complete</div>
+                </div>
+                <br/>
+                <div class="row status">
+                    <div class="col-xs-2 col-sm-1 created">
+                        <div class="top"></div>
+                        <div class="bottom"></div>
+                    </div>
+                    <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                    <div class="col-xs-6 info">
+                        <div class="top">Robert Alenhan</div>
+                        <div class="bottom">Employment Agreement</div>
+                    </div>
+                    <div class="col-sm-4 status-code">Awaiting Signature</div>
+                </div>
+                <br/>
+
+                <script>
+                    var containers = $('.status-container[data-cat="hr"] .status').toArray();
+                    var tot = containers.length;
+                    if(tot){
+                        containers.map(function(obj,i){
+                            var top = $(obj).find('.created .top');
+                            var bottom = $(obj).find('.created .bottom');
+                            var now = moment().subtract(tot-i,'day');
+                            top.html(now.format('MMM').toUpperCase());
+                            bottom.html(now.format('DD'));
+                        });
+                    }
+
+                </script>
+
+                {{#each profile.hr_requests}}
+                    <div class="row status">
+                        <div class="col-xs-2 col-sm-1 created">
+                            <div class="top">{{this.createdMonth}}</div>
+                            <div class="bottom">{{this.createdDate}}</div>
+                        </div>
+                        <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                        <div class="col-xs-6 info">
+                            <div class="top">{{this.names}}</div>
+                            <div class="bottom">{{this.title}}</div>
+                        </div>
+                        <div class="col-sm-4 status-code">
+                            <div class="top">{{this.status}}</div>
+                            <div class="bottom">{{this.statuscta}}</div>
+                        </div>
+                    </div>
+                    <br/>
+                {{/each}}
+
+            </div>
+        </div>
+    {{/if}}
+
+    <script>
+        reorder('hr');
+    </script>
+
+    {{#if  profile.realestate}}
+        <div class="status-container" data-cat="realestate">
+            <div class="status-header">
+                Document Status | Real Estate
+            </div>
+            <hr/>
+            <div class="status-body">
+
+                <div class="row status">
+                    <div class="col-xs-2 col-sm-1 created">
+                        <div class="top">MAR</div>
+                        <div class="bottom">20</div>
+                    </div>
+                    <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                    <div class="col-xs-6 info">
+                        <div class="top">Alex Merceoni</div>
+                        <div class="bottom">Dress Code Policy Update</div>
+                    </div>
+                    <div class="col-sm-4 status-code" style="color:green">Complete</div>
+                </div>
+                <br/>
+                <div class="row status">
+                    <div class="col-xs-2 col-sm-1 created">
+                        <div class="top">JUN</div>
+                        <div class="bottom">18</div>
+                    </div>
+                    <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                    <div class="col-xs-6 info">
+                        <div class="top">Jessica Charmini</div>
+                        <div class="bottom">Employment Agreement</div>
+                    </div>
+                    <div class="col-sm-4 status-code" style="color:green">Complete</div>
+                </div>
+                <br/>
+                <div class="row status">
+                    <div class="col-xs-2 col-sm-1 created">
+                        <div class="top">JUN</div>
+                        <div class="bottom">18</div>
+                    </div>
+                    <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                    <div class="col-xs-6 info">
+                        <div class="top">Robert Alenhan</div>
+                        <div class="bottom">Employment Agreement</div>
+                    </div>
+                    <div class="col-sm-4 status-code">Awaiting Signature</div>
+                </div>
+                <br/>
+                <div class="row status">
+                    <div class="col-xs-2 col-sm-1 created">
+                        <div class="top">JUN</div>
+                        <div class="bottom">18</div>
+                    </div>
+                    <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                    <div class="col-xs-6 info">
+                        <div class="top">Tony Oswald</div>
+                        <div class="bottom">Employment Agreement</div>
+                    </div>
+                    <div class="col-sm-4 status-code">Awaiting Signature</div>
+                </div>
+                <br/>
+
+                <script>
+                    var containers = $('.status-container[data-cat="realestate"] .status').toArray();
+                    var tot = containers.length;
+                    if(tot){
+                        containers.map(function(obj,i){
+                            var top = $(obj).find('.created .top');
+                            var bottom = $(obj).find('.created .bottom');
+                            var now = moment().subtract(tot-i,'day');
+                            top.html(now.format('MMM').toUpperCase());
+                            bottom.html(now.format('DD'));
+                        });
+                    }
+
+                </script>
+
+                {{#each profile.realestate_requests}}
+                    <div class="row status">
+                        <div class="col-xs-2 col-sm-1 created">
+                            <div class="top">{{this.createdMonth}}</div>
+                            <div class="bottom">{{this.createdDate}}</div>
+                        </div>
+                        <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                        <div class="col-xs-6 info">
+                            <div class="top">{{this.names}}</div>
+                            <div class="bottom">{{this.title}}</div>
+                        </div>
+                        <div class="col-sm-4 status-code">{{this.status}}</div>
+                    </div>
+                    <br/>
+                {{/each}}
+
+            </div>
+        </div>
+    {{/if}}
+
+    <script>
+        reorder('realestate');
+    </script>
+
+    {{#if profile.legal}}
+        <div class="status-container" data-cat="legal">
+            <div class="status-header">
+                Document Status | Legal
+            </div>
+            <hr/>
+            <div class="status-body">
+
+                <div class="row status">
+                    <div class="col-xs-2 col-sm-1 created">
+                        <div class="top">JUN</div>
+                        <div class="bottom">18</div>
+                    </div>
+                    <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                    <div class="col-xs-6 info">
+                        <div class="top">Jessica Charmini</div>
+                        <div class="bottom">Employment Agreement</div>
+                    </div>
+                    <div class="col-sm-4 status-code" style="color:green">Complete</div>
+                </div>
+                <br/>
+                <div class="row status">
+                    <div class="col-xs-2 col-sm-1 created">
+                        <div class="top">JUN</div>
+                        <div class="bottom">18</div>
+                    </div>
+                    <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                    <div class="col-xs-6 info">
+                        <div class="top">Robert Alenhan</div>
+                        <div class="bottom">Employment Agreement</div>
+                    </div>
+                    <div class="col-sm-4 status-code">Awaiting Signature</div>
+                </div>
+                <br/>
+
+                <script>
+                    var containers = $('.status-container[data-cat="legal"] .status').toArray();
+                    var tot = containers.length;
+                    if(tot){
+                        containers.map(function(obj,i){
+                            var top = $(obj).find('.created .top');
+                            var bottom = $(obj).find('.created .bottom');
+                            var now = moment().subtract(tot-i,'day');
+                            top.html(now.format('MMM').toUpperCase());
+                            bottom.html(now.format('DD'));
+                        });
+                    }
+
+                </script>
+
+                {{#each profile.legal_requests}}
+                    <div class="row status">
+                        <div class="col-xs-2 col-sm-1 created">
+                            <div class="top">{{this.createdMonth}}</div>
+                            <div class="bottom">{{this.createdDate}}</div>
+                        </div>
+                        <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                        <div class="col-xs-6 info">
+                            <div class="top">{{this.names}}</div>
+                            <div class="bottom">{{this.title}}</div>
+                        </div>
+                        <div class="col-sm-4 status-code">{{this.status}}</div>
+                    </div>
+                    <br/>
+                {{/each}}
+
+            </div>
+        </div>
+    {{/if}}
+
+    <script>
+        reorder('legal');
+    </script>
+
+    {{#if profile.custom_requests}}
+        <div class="status-container" data-cat="custom">
+            <div class="status-header">
+                Document Status | Custom Templates
+            </div>
+            <hr/>
+            <div class="status-body">
+
+                {{#each profile.custom_requests}}
+                    <div class="row status">
+                        <div class="col-xs-2 col-sm-1 created">
+                            <div class="top">{{this.createdMonth}}</div>
+                            <div class="bottom">{{this.createdDate}}</div>
+                        </div>
+                        <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                        <div class="col-xs-6 info">
+                            <div class="top">{{this.names}}</div>
+                            <div class="bottom">{{this.title}}</div>
+                        </div>
+                        <div class="col-sm-4 status-code">{{this.status}}</div>
+                    </div>
+                {{/each}}
+
+            </div>
+        </div>
+    {{/if}}
+
+    <script>
+        reorder('custom');
+    </script>
+
+</div>
