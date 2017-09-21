@@ -22,13 +22,18 @@ module.exports = {
         else
             data.roles = [];
 
-        console.log(data);
-
         var newroles = [];
 
         data.roles.map(function(obj,i){
-            newroles.push({name:obj,order:i});
+            newroles.push({name:obj,role:obj,order:i});
         });
+
+        if(!data.message)
+            data.message = 'Template default message';
+        if(!data.subject)
+            data.subject = 'Template default subject';
+        if(!data.name)
+            data.name = 'Template default title';
 
         var options = {
             test_mode: 1,
@@ -38,14 +43,11 @@ module.exports = {
             subject: data.subject,
             message: data.message,
             signer_roles: newroles,
-            cc_roles: data.ccroles,
+            cc_roles: data.ccroles
         };
 
-        console.log(options);
-
-        var results = hellosign.template.createEmbeddedDraft(options)
+        hellosign.template.createEmbeddedDraft(options)
             .then(function(response){
-                console.log(response);
                 if(response.statusMessage=='OK'){
 
                     entity.findOne({url:data.company}, function(err, doc){
@@ -89,9 +91,6 @@ module.exports = {
         if(!data.ccroles)
             data.ccroles = [];
 
-        //if(!data.sender)
-        //    data.sender = data.company+'@hellosign.demo';
-
         var options = {
             test_mode: 1,
             clientId : data.client_id,
@@ -103,9 +102,8 @@ module.exports = {
             allow_decline:1
         };
 
-        var results = hellosign.signatureRequest.send(options)
+        hellosign.signatureRequest.send(options)
             .then(function(response){
-                console.log(response);
                 if(response.statusMessage=='OK'){
                     return cb(response)
                 }
@@ -116,6 +114,7 @@ module.exports = {
                 cb(err);
             });
     },
+
     getTemplate: function(id, cb){
 
         hellosign.template.get(id)
@@ -234,7 +233,6 @@ module.exports = {
         async.each(list, function(item, cb){
             hellosign.signatureRequest.get(item.requestId)
                 .then(function(response){
-                    //console.log(response);
                     statuses.push(response);
                     cb()
                 })
@@ -249,8 +247,6 @@ module.exports = {
     },
 
     getEmbeddedSigning: function(data, cb){
-
-        console.log(data.client_id);
 
         var options = {
             test_mode : 1,
@@ -268,18 +264,12 @@ module.exports = {
             allow_decline:1
         };
 
-        console.log(options);
-
         hellosign.signatureRequest.createEmbeddedWithTemplate(options)
             .then(function(response){
-
                 var sigId = response.signature_request.signatures[0].signature_id;
                 return hellosign.embedded.getSignUrl(sigId)
-
             })
             .then(function(response){
-
-                console.log(response);
                 cb(response);
 
             })
@@ -291,8 +281,6 @@ module.exports = {
     },
 
     getEmbeddedReassign: function(data, cb){
-
-        console.log(data.id);
 
         var options = {
             test_mode : 1,
@@ -320,47 +308,17 @@ module.exports = {
 
             })
             .then(function(response){
-
-                console.log(response);
                 cb(response);
-
             })
             .catch(function(err){
                 console.log(err);
             });
 
-        /*
-
-         hellosign.signatureRequest.createEmbeddedFromTemplate(options)
-         .then(function(response){
-
-         console.log(response);
-
-         var sigId = response.unclaimed_draft.signature_request_id;
-         return hellosign.embedded.getSignUrl(sigId)
-
-         })
-         .then(function(response){
-
-         console.log(response);
-         cb(response);
-
-         })
-         .catch(function(err){
-         console.log(err);
-         });
-
-         */
-
-
     },
 
     getMergeFields: function(data, cb){
 
-        var mergeFields = [];
-        var customFields = [];
-
-
+        var date = moment(data.start, 'DD/MM/YYYY');
 
         var options = {
             test_mode : 1,
@@ -377,56 +335,31 @@ module.exports = {
                 }
             ],
             custom_fields:[
-                {name:'day',value:moment().date()},
-                {name:'month',value:moment().month()+1},
-                {name:'year',value:moment().year()},
+                {name:'day',value:moment().format('DD')},
+                {name:'month',value:moment().format('MMMM')},
+                {name:'year',value:moment().format('YY')},
                 {name:'employee_name',value:data.name},
                 {name:'position',value:data.position},
-                {name:'day_start',value:data.start.split('/')[0]},
-                {name:'month_start',value:data.start.split('/')[1]},
-                {name:'year_start',value:data.start.split('/')[2]},
-                {name:'new_position',value:data.new_position},
-                {name:'new_salary',value:data.new_salary}
+                {name:'day_start',value:date.format('DD')},
+                {name:'month_start',value:date.format('MMMM')},
+                {name:'year_start',value:date.format('YY')},
             ],
             allow_decline:1
         };
 
-        console.log(options);
-
         hellosign.signatureRequest.sendWithTemplate(options)
             .then(function(response){
-                console.log(response);
                 cb(response);
             })
             .catch(function(err){
                 console.log(err);
-                //catch error
             });
-
-        /*hellosign.signatureRequest.createEmbedded(options)
-         .then(function(response){
-
-         var sigId = response.signature_request.signatures[0].signature_id;
-         return hellosign.embedded.getSignUrl(sigId)
-
-         })
-         .then(function(response){
-
-         console.log(response);
-         cb(response);
-
-         })
-         .catch(function(err){
-         console.log(err);
-         });
-         */
 
     },
 
     previewMergeFields: function(data, cb){
 
-        var mergeFields = [];
-        var customFields = [];
+        var date = moment(data.start, 'DD/MM/YYYY');
 
         var options = {
             test_mode : 1,
@@ -445,48 +378,25 @@ module.exports = {
                 }
             ],
             custom_fields:[
-                {name:'day',value:moment().date()},
-                {name:'month',value:moment().month()+1},
-                {name:'year',value:moment().year()},
+                {name:'day',value:moment().format('DD')},
+                {name:'month',value:moment().format('MMMM')},
+                {name:'year',value:moment().format('YY')},
                 {name:'employee_name',value:data.name},
                 {name:'position',value:data.position},
-                {name:'day_start',value:data.start.split('/')[0]},
-                {name:'month_start',value:data.start.split('/')[1]},
-                {name:'year_start',value:data.start.split('/')[2]},
-                {name:'new_position',value:data.new_position},
-                {name:'new_salary',value:data.new_salary}
+                {name:'day_start',value:date.format('DD')},
+                {name:'month_start',value:date.format('MMMM')},
+                {name:'year_start',value:date.format('YY')}
             ],
             allow_decline:1
         };
 
-        console.log(options);
-
         hellosign.unclaimedDraft.createEmbeddedWithTemplate(options)
             .then(function(response){
-                console.log(response);
                 cb(response);
             })
             .catch(function(err){
                 console.log(err);
             });
-
     }
 
-
-
-
 };
-
-/* Signer roles for embedded templates in the following format
-
- signer_roles: [
- {
- name: 'Sherlock',
- order: 0
- },{
- name: 'Watson',
- order: 1
- }
- ]
-
- */

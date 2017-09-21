@@ -1,4 +1,5 @@
 config = require('./config');
+rootpath = __dirname.toString();
 
 var express = require('express');
 var app = express();
@@ -6,7 +7,7 @@ var server = require('http').Server(app);
 
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-mongoose.connect(config.mongodb.host,{useMongoClient: true});
+mongoose.connect(config.mongodb.host);
 
 app.use('/', express.static(__dirname + "/public"));
 app.use('/uploads', express.static(__dirname + "/uploads"));
@@ -22,5 +23,4 @@ app.use(router);
 
 require('./routes/route.main.js')(router);
 
-server.listen(process.env.PORT || 9000);
-console.log("server's up and running");
+server.listen(process.env.PORT || 8000);

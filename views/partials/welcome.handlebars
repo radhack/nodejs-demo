@@ -1,0 +1,686 @@
+<div class="step1">
+    <div class="welcome-main-container">
+
+        {{#if profile.custom}}
+            <div class="row top-banner">
+
+                <i class="fa fa-exclamation-triangle"></i><span style="margin-left:10px;">You have <span class="number">1</span> new document(s)!</span>
+
+            </div>
+        {{else if profile.hasRequests}}
+            <div class="row top-banner">
+
+                <i class="fa fa-exclamation-triangle"></i><span style="margin-left:10px;">You have <span class="number">1</span> new document(s)!</span>
+
+            </div>
+        {{else}}
+            <div class="row top-banner">
+
+                <i class="fa fa-exclamation-triangle"></i><span style="margin-left:10px;">You have <span class="number">1</span> new document(s)!</span>
+
+            </div>
+        {{/if}}
+
+
+        <div class="tab-body hidden">
+            <div class="tab-body-title">Your Documents</div>
+
+            <div class="row labels tab-label-row">
+                <div class="col-sm-3">Templates</div>
+                <div class="col-sm-3">Files</div>
+            </div>
+            <div class="main-panel">
+                {{#if profile.custom}}
+                    {{#each profile.custom}}
+                        <div class="row document">
+                            <div class="col-sm-3 template-file-text">{{this.name}}</div>
+                            <div class="col-sm-3 template-file-text">{{this.filename}}</div>
+                            <div class="col-sm-4"><div class="btn btn-default cta" style="background-color:{{profile.primaryColor}} !important" data-name="{{this.name}}" data-id="{{this.templateId}}">Request Signature</div></div>
+                        </div>
+                    {{/each}}
+                {{/if}}
+
+                <div class="row document" data-tag="mutual_nda">
+                    <div class="col-sm-3 template-file-text">Mutual NDA</div>
+                    <div class="col-sm-3 template-file-text">mutual_nda.pdf</div>
+                    <div class="col-sm-4"><div class="btn btn-default cta" data-name="Mutual NDA" data-cat = 'hr' data-id="c5961859652155b952d0479d5a083bb9acae2e6d">Request Signature</div></div>
+                </div>
+
+                <div class="row document" data-tag="form_w-4">
+                    <div class="col-sm-3 template-file-text">Form W-4</div>
+                    <div class="col-sm-3 template-file-text">form_w-4.pdf</div>
+                    <div class="col-sm-4"><div class="btn btn-default cta" data-name="Form W-4" data-cat = 'hr' data-id="95f85e828cc1b48208eb4a72f8870ca1aeab80c0">Request Signature</div></div>
+                </div>
+
+                <div class="row status">
+                    <div class="col-sm-3 template-file-text">Sales Contract</div>
+                    <div class="col-sm-3 template-file-text fname">sales-contract.pdf</div>
+                    <div class="col-sm-4"><div class="text pull-right" style="padding:10px 32px; width:200px;">Awaiting Signature</div></div>
+                </div>
+
+                {{#if profile.custom_requests}}
+                    {{#each profile.custom_requests}}
+                        <div class="row status">
+                            <div class="col-sm-3 template-file-text">{{this.name}}</div>
+                            <div class="col-sm-3 template-file-text fname">{{this.filename}}</div>
+                            <div class="col-sm-4"><div class="text pull-right" style="padding:10px 32px; width:200px;">{{this.status}}</div></div>
+                        </div>
+                    {{/each}}
+                {{/if}}
+                {{#if profile.hr_requests}}
+                    {{#each profile.hr_requests}}
+                        <div class="row status">
+                            <div class="col-sm-3 template-file-text">{{this.name}}</div>
+                            <div class="col-sm-3 template-file-text fname">{{this.filename}}</div>
+                            <div class="col-sm-4"><div class="text pull-right" style="padding:10px 32px; width:200px;">{{this.status}}</div></div>
+                        </div>
+                    {{/each}}
+                {{/if}}
+                {{#if profile.legal_requests}}
+                    {{#each profile.legal_requests}}
+                        <div class="row status">
+                            <div class="col-sm-3 template-file-text">{{this.name}}</div>
+                            <div class="col-sm-3 template-file-text fname">{{this.filename}}</div>
+                            <div class="col-sm-4"><div class="text pull-right" style="padding:10px 32px; width:200px;">{{this.status}}</div></div>
+                        </div>
+                    {{/each}}
+                {{/if}}
+                {{#if profile.realestate_requests}}
+                    {{#each profile.realestate_requests}}
+                        <div class="row status">
+                            <div class="col-sm-3 template-file-text">{{this.name}}</div>
+                            <div class="col-sm-3 template-file-text fname">{{this.filename}}</div>
+                            <div class="col-sm-4"><div class="text pull-right" style="padding:10px 32px; width:200px;">{{this.status}}</div></div>
+                        </div>
+                    {{/each}}
+                {{/if}}
+            </div>
+        </div>
+
+        <!--{{#if profile.custom}}
+        {{else}}
+                        <br/>
+                        <br/>
+                        <div class="row">
+                            <div class="col-sm-12" style="font-size:16px;">You don't have any custom templates right now. </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-sm-12"><a class="btn btn-default cta pull-left" href='embedded-templates' style="background-color:{{profile.primaryColor}} !important">Create Embedded Template</a></div>
+                        </div>
+                        <br/>
+                    {{/if}}-->
+
+        <!--{{#if profile.custom_requests}}
+        {{else if profile.realestate_requests}}
+        {{else if profile.legal_requests}}
+        {{else if profile.hr_requests}}
+        {{else}}
+                        <br/>
+                        <br/>
+                        <div class="row">
+                            <div class="col-sm-12" style="font-size:16px;">You don't have any signature requests right now. Send one from a template below!</div>
+                        </div>
+                        <br/>
+                        <br/>
+                    {{/if}}-->
+
+        <div class="modal fade" id="signersModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <div class="main row">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div><label for="" class="title"></label></div>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div><label for="">Subject</label></div>
+                                    <div><input type="text" class="subject" style="width:100%"></div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div><label for="">Message</label></div>
+                                    <div><textarea rows="3" class="message" style="width:100%"></textarea></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="body row">
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default cta">Send Request</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+
+        var docs = $('.welcome-main-container .tab-body .main-panel .document').toArray();
+        var stats = $('.welcome-main-container .tab-body .main-panel .status').toArray();
+        $('.welcome-main-container .tab-body .main-panel .document').remove();
+        docs.map(function(obj){
+            $('.welcome-main-container .tab-body .main-panel').prepend(obj);
+        });
+
+        stats.map(function(obj){
+            var item = $(obj);
+            var txt = item.find('.fname').text().replace('.pdf','');
+            $('.welcome-main-container .tab-body .main-panel .document').each(function(){
+                console.log($(this).attr('data-tag'));
+                console.log(txt);
+                if($(this).attr('data-tag')==txt){
+                    $(this).remove();
+                    docs.length = docs.length-1;
+                }
+            })
+        });
+
+            {{#if profile.custom}}
+            //$('.welcome-main-container .tab-body').removeClass('hidden');
+            {{else if profile.hasRequests}}
+            //$('.welcome-main-container .tab-body').removeClass('hidden');
+            {{/if}}
+        $('.welcome-main-container .tab-body').removeClass('hidden');
+
+        $('.welcome-main-container .top-banner .number').text(docs.length);
+
+    </script>
+
+    <script>
+
+        $('#signersModal').modal({show:false, backdrop:false});
+
+        $('.welcome-from-template-container .tab-body .cta, .welcome-main-container .tab-body .cta').click(function(){
+
+            $('#signersModal .body').html("");
+
+            var name = $(this).attr('data-name');
+
+            console.log(name);
+
+            swal({
+                title: "Working..",
+                text: "Getting template fields..",
+                imageUrl: "/img/ripple.gif",
+                showConfirmButton:false
+            });
+
+            $('#signersModal .main .title').html(name);
+
+            var tid = $(this).attr('data-id');
+
+            $('#signersModal .cta').attr('data-tid',tid);
+
+            $.ajax({
+                type:'POST',
+                url:'/fromTemplate',
+                data:{templateId:tid},
+                success: function(response){
+
+                    swal.close();
+
+                    console.log(response);
+
+                    if(response.statusMessage=='OK'){
+
+                        response.template.signer_roles.map(function(sr){
+
+                            $('#signersModal .body').append('<div class="signer">' +
+                                    '<div class="row" style="padding-top:20px;margin-bottom:-10px!important;"><div class="col-sm-4">Role: </div><div class="col-sm-4 role">'+sr.name+'</div></div><br/>' +
+                                    '<div class="row"><div class="col-sm-4"><label>Signer Name:</label></div><div class="col-sm-4"><input type="text" class="name"/></div></div>' +
+                                    '<div class="row"><div class="col-sm-4"><label>Signer Email:</label></div><div class="col-sm-4"><input type="text" class="email"/></div></div><br/>' +
+                                    '</div>')
+                        });
+
+                        $('#signersModal').modal('show')
+
+                    }
+                }
+            });
+        });
+
+        $('#signersModal .cta').click(function(){
+
+            var tid = $(this).attr('data-tid');
+
+            var data = {
+                templateId:tid,
+                title : $('#signersModal .main .title').html(),
+                subject : $('#signersModal .main .subject').val().trim(),
+                message : $('#signersModal .main .message').val().trim()
+            };
+
+            var signers = [];
+
+            var proceed = true;
+
+            $('#signersModal .body .signer').toArray().map(function(obj){
+
+                if(!$(obj).find('.name').val().trim()){
+                    proceed=false;
+                    !$(obj).find('.name').addClass('attention')
+                }
+
+                if(!$(obj).find('.email').val().trim()){
+                    proceed=false;
+                    !$(obj).find('.email').addClass('attention')
+                }
+
+                signers.push({
+                    role: $(obj).find('.role').text().trim(),
+                    name: $(obj).find('.name').val().trim(),
+                    email_address: $(obj).find('.email').val().trim()
+                })
+            });
+
+            data.signers = signers;
+            //data.category = $('.active-tab').attr('data-cat');
+            data.category = 'custom';
+
+            console.log(data);
+
+            if(!data.subject){
+                proceed=false;
+                $('#signersModal .main .subject').addClass('attention')
+            }
+
+            if(!data.message){
+                proceed=false;
+                $('#signersModal .main .message').addClass('attention')
+            }
+
+
+            if(proceed){
+                $('#signersModal').modal('hide');
+
+                setTimeout(function(){
+                    swal({
+                        title: "Sending..",
+                        text: "We are sending your signature request",
+                        imageUrl: "/img/ripple.gif",
+                        showConfirmButton:false
+                    });
+                },300);
+
+                $.ajax({
+                    type:'POST',
+                    url:'/sendRequestFromTemplate',
+                    data:data,
+                    success: function(response){
+
+                        console.log(response);
+
+                        if(response.statusMessage=='OK'){
+
+                            swal.close();
+                            $('.step1').addClass('hidden');
+                            $('.step2').removeClass('hidden');
+
+                        }
+                    }
+                });
+            }else{
+
+            }
+
+        });
+
+    </script>
+
+
+    <div status-main class="status-section" style="margin-top:20px;">
+
+        <br/>
+
+        <div class="" style="font-size:24px;margin-left:60px;font-family: 'ProximaNovaLight', sans-serif;">Status of Requests</div>
+
+        <script>
+            reorder = function(id){
+                $('.status-container[data-cat="'+id+'"]').find('br').remove();
+                $('.status-container[data-cat="'+id+'"] .status').sort(function (a, b) {
+                    var m1 = $(a).find('.top');
+                    var d1 = $(a).find('.bottom');
+                    var m2 = $(b).find('.top');
+                    var d2 = $(b).find('.bottom');
+                    if (moment(m1 + '/' + d1, 'MMM/DD') > moment(m2 + '/' + d2, 'MMM/DD')) {
+                        return -1
+                    } else {
+                        return 1
+                    }
+                }).each(function () {
+                    $('.status-container[data-cat="'+id+'"]').find($(this)).remove();
+                    $('.status-container[data-cat="'+id+'"] .status-body').append($(this)).append('<br/>')
+                });
+            }
+        </script>
+
+        {{#if profile.hr}}
+            <div class="status-container" data-cat="hr" style="margin-top:20px;">
+                <div class="status-header">
+                    Document Status | Human Resources
+                </div>
+                <hr/>
+                <div class="status-body">
+
+                    <div class="row status">
+                        <div class="col-xs-2 col-sm-1 created">
+                            <div class="top"></div>
+                            <div class="bottom"></div>
+                        </div>
+                        <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                        <div class="col-xs-6 info">
+                            <div class="top">Alex Merceoni</div>
+                            <div class="bottom">Dress Code Policy Update</div>
+                        </div>
+                        <div class="col-sm-4 status-code" style="color:green">Complete</div>
+                    </div>
+                    <br/>
+                    <div class="row status">
+                        <div class="col-xs-2 col-sm-1 created">
+                            <div class="top"></div>
+                            <div class="bottom"></div>
+                        </div>
+                        <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                        <div class="col-xs-6 info">
+                            <div class="top">Jessica Charmini</div>
+                            <div class="bottom">Employment Agreement</div>
+                        </div>
+                        <div class="col-sm-4 status-code" style="color:green">Complete</div>
+                    </div>
+                    <br/>
+                    <div class="row status">
+                        <div class="col-xs-2 col-sm-1 created">
+                            <div class="top"></div>
+                            <div class="bottom"></div>
+                        </div>
+                        <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                        <div class="col-xs-6 info">
+                            <div class="top">Robert Alenhan</div>
+                            <div class="bottom">Employment Agreement</div>
+                        </div>
+                        <div class="col-sm-4 status-code">Awaiting Signature</div>
+                    </div>
+                    <br/>
+
+                    <script>
+                        var containers = $('.status-container[data-cat="hr"] .status').toArray();
+                        var tot = containers.length;
+                        if(tot){
+                            containers.map(function(obj,i){
+                                var top = $(obj).find('.created .top');
+                                var bottom = $(obj).find('.created .bottom');
+                                var now = moment().subtract(tot-i,'day');
+                                top.html(now.format('MMM').toUpperCase());
+                                bottom.html(now.format('DD'));
+                            });
+                        }
+
+                    </script>
+
+                    {{#each profile.hr_requests}}
+                        <div class="row status">
+                            <div class="col-xs-2 col-sm-1 created">
+                                <div class="top">{{this.createdMonth}}</div>
+                                <div class="bottom">{{this.createdDate}}</div>
+                            </div>
+                            <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                            <div class="col-xs-6 info">
+                                <div class="top">{{this.names}}</div>
+                                <div class="bottom">{{this.title}}</div>
+                            </div>
+                            <div class="col-sm-4 status-code">
+                                <div class="top">{{this.status}}</div>
+                                <div class="bottom">{{this.statuscta}}</div>
+                            </div>
+                        </div>
+                        <br/>
+                    {{/each}}
+
+                </div>
+            </div>
+        {{/if}}
+
+        <script>
+            reorder('hr');
+        </script>
+
+        {{#if  profile.realestate}}
+            <div class="status-container" data-cat="realestate">
+                <div class="status-header">
+                    Document Status | Real Estate
+                </div>
+                <hr/>
+                <div class="status-body">
+
+                    <div class="row status">
+                        <div class="col-xs-2 col-sm-1 created">
+                            <div class="top">MAR</div>
+                            <div class="bottom">20</div>
+                        </div>
+                        <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                        <div class="col-xs-6 info">
+                            <div class="top">Alex Merceoni</div>
+                            <div class="bottom">Dress Code Policy Update</div>
+                        </div>
+                        <div class="col-sm-4 status-code" style="color:green">Complete</div>
+                    </div>
+                    <br/>
+                    <div class="row status">
+                        <div class="col-xs-2 col-sm-1 created">
+                            <div class="top">JUN</div>
+                            <div class="bottom">18</div>
+                        </div>
+                        <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                        <div class="col-xs-6 info">
+                            <div class="top">Jessica Charmini</div>
+                            <div class="bottom">Employment Agreement</div>
+                        </div>
+                        <div class="col-sm-4 status-code" style="color:green">Complete</div>
+                    </div>
+                    <br/>
+                    <div class="row status">
+                        <div class="col-xs-2 col-sm-1 created">
+                            <div class="top">JUN</div>
+                            <div class="bottom">18</div>
+                        </div>
+                        <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                        <div class="col-xs-6 info">
+                            <div class="top">Robert Alenhan</div>
+                            <div class="bottom">Employment Agreement</div>
+                        </div>
+                        <div class="col-sm-4 status-code">Awaiting Signature</div>
+                    </div>
+                    <br/>
+                    <div class="row status">
+                        <div class="col-xs-2 col-sm-1 created">
+                            <div class="top">JUN</div>
+                            <div class="bottom">18</div>
+                        </div>
+                        <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                        <div class="col-xs-6 info">
+                            <div class="top">Tony Oswald</div>
+                            <div class="bottom">Employment Agreement</div>
+                        </div>
+                        <div class="col-sm-4 status-code">Awaiting Signature</div>
+                    </div>
+                    <br/>
+
+                    <script>
+                        var containers = $('.status-container[data-cat="realestate"] .status').toArray();
+                        var tot = containers.length;
+                        if(tot){
+                            containers.map(function(obj,i){
+                                var top = $(obj).find('.created .top');
+                                var bottom = $(obj).find('.created .bottom');
+                                var now = moment().subtract(tot-i,'day');
+                                top.html(now.format('MMM').toUpperCase());
+                                bottom.html(now.format('DD'));
+                            });
+                        }
+
+                    </script>
+
+                    {{#each profile.realestate_requests}}
+                        <div class="row status">
+                            <div class="col-xs-2 col-sm-1 created">
+                                <div class="top">{{this.createdMonth}}</div>
+                                <div class="bottom">{{this.createdDate}}</div>
+                            </div>
+                            <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                            <div class="col-xs-6 info">
+                                <div class="top">{{this.names}}</div>
+                                <div class="bottom">{{this.title}}</div>
+                            </div>
+                            <div class="col-sm-4 status-code">{{this.status}}</div>
+                        </div>
+                        <br/>
+                    {{/each}}
+
+                </div>
+            </div>
+        {{/if}}
+
+        <script>
+            reorder('realestate');
+        </script>
+
+        {{#if profile.legal}}
+            <div class="status-container" data-cat="legal">
+                <div class="status-header">
+                    Document Status | Legal
+                </div>
+                <hr/>
+                <div class="status-body">
+
+                    <div class="row status">
+                        <div class="col-xs-2 col-sm-1 created">
+                            <div class="top">JUN</div>
+                            <div class="bottom">18</div>
+                        </div>
+                        <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                        <div class="col-xs-6 info">
+                            <div class="top">Jessica Charmini</div>
+                            <div class="bottom">Employment Agreement</div>
+                        </div>
+                        <div class="col-sm-4 status-code" style="color:green">Complete</div>
+                    </div>
+                    <br/>
+                    <div class="row status">
+                        <div class="col-xs-2 col-sm-1 created">
+                            <div class="top">JUN</div>
+                            <div class="bottom">18</div>
+                        </div>
+                        <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                        <div class="col-xs-6 info">
+                            <div class="top">Robert Alenhan</div>
+                            <div class="bottom">Employment Agreement</div>
+                        </div>
+                        <div class="col-sm-4 status-code">Awaiting Signature</div>
+                    </div>
+                    <br/>
+
+                    <script>
+                        var containers = $('.status-container[data-cat="legal"] .status').toArray();
+                        var tot = containers.length;
+                        if(tot){
+                            containers.map(function(obj,i){
+                                var top = $(obj).find('.created .top');
+                                var bottom = $(obj).find('.created .bottom');
+                                var now = moment().subtract(tot-i,'day');
+                                top.html(now.format('MMM').toUpperCase());
+                                bottom.html(now.format('DD'));
+                            });
+                        }
+
+                    </script>
+
+                    {{#each profile.legal_requests}}
+                        <div class="row status">
+                            <div class="col-xs-2 col-sm-1 created">
+                                <div class="top">{{this.createdMonth}}</div>
+                                <div class="bottom">{{this.createdDate}}</div>
+                            </div>
+                            <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                            <div class="col-xs-6 info">
+                                <div class="top">{{this.names}}</div>
+                                <div class="bottom">{{this.title}}</div>
+                            </div>
+                            <div class="col-sm-4 status-code">{{this.status}}</div>
+                        </div>
+                        <br/>
+                    {{/each}}
+
+                </div>
+            </div>
+        {{/if}}
+
+        <script>
+            reorder('legal');
+        </script>
+
+        {{#if profile.custom_requests}}
+            <div class="status-container" data-cat="custom">
+                <div class="status-header">
+                    Document Status | Custom Templates
+                </div>
+                <hr/>
+                <div class="status-body">
+
+                    {{#each profile.custom_requests}}
+                        <div class="row status">
+                            <div class="col-xs-2 col-sm-1 created">
+                                <div class="top">{{this.createdMonth}}</div>
+                                <div class="bottom">{{this.createdDate}}</div>
+                            </div>
+                            <div class="col-sm-1 icon"><img class="statusIcon" src="{{this.icon}}"/></div>
+                            <div class="col-xs-6 info">
+                                <div class="top">{{this.names}}</div>
+                                <div class="bottom">{{this.title}}</div>
+                            </div>
+                            <div class="col-sm-4 status-code">{{this.status}}</div>
+                        </div>
+                    {{/each}}
+
+                </div>
+            </div>
+        {{/if}}
+
+        <script>
+            reorder('custom');
+        </script>
+
+    </div>
+
+</div>
+
+<div class="step2 hidden col-sm-12">
+    <div class="successBox">
+        <div>
+            <img class="check" src="/img/success-button.png"/>
+            <div class="text">Your document has been successfully sent.</div>
+        </div>
+    </div>
+    <br/>
+    <div class="btn btn-default cta middle" onclick="next()">Back to Welcome Page</div>
+    <br/>
+    <div class="btn btn-default cta middle" onclick="fromtemplate()">Next: From Template</div>
+</div>
+
+<script>
+    function next(){
+        window.location.href = '/{{profile.url}}/welcome';
+    }
+    function fromtemplate(){
+        window.location.href = '/{{profile.url}}/from-template';
+    }
+</script>
