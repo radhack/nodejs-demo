@@ -17,7 +17,8 @@
             HelloSign.open({
                 url: response.embedded.sign_url,
                 container:document.getElementById('embeddedSigningContainer'),
-                allowCancel: true,
+                uxVersion: 2,
+	        allowCancel: true,
                 messageListener: function(eventData) {
                     console.log(eventData);
 
