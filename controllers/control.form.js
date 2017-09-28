@@ -98,8 +98,8 @@ module.exports = {
         var options = {
             name: data.company,
             test_mode:1,
-            domain: 'hellosigndemo.finsweet.com',
-            callback_url: 'http://hellosigndemo.finsweet.com/callback',
+            domain: 'demo.hellosign.com',
+            callback_url: 'http://demo.hellosign.com/callback',
             white_labeling_options: JSON.stringify(wlabel)
         };
 
