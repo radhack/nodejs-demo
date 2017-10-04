@@ -12,15 +12,15 @@ module.exports = {
             data.filename='mutual-nda-with-date.pdf';
         }
 
-        if(data.ccroles)
-            data.ccroles = [].concat(data.ccroles);
-        else
-            data.ccroles = [];
-
-        if(data.roles)
-            data.roles = [].concat(data.roles);
-        else
-            data.roles = [];
+        if(data.ccroles) {
+            data.ccroles = (data.ccroles).split(",")}
+        else {
+            data.ccroles = []};
+        
+        if(data.roles) {
+            data.roles = (data.roles).split(",")}
+        else {
+            data.roles = []};
 
         var newroles = [];
 
