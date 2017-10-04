@@ -99,7 +99,7 @@ module.exports = {
             name: data.company,
             test_mode:1,
             domain: 'demo.hellosign.com',
-            callback_url: 'http://demo.hellosign.com/callback',
+            callback_url: 'https://demo.hellosign.com/callback',
             white_labeling_options: JSON.stringify(wlabel)
         };
 
