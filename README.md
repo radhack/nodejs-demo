@@ -81,7 +81,6 @@ Assuming that you will be deploying this on a clean AWS Fedora/Centos server ins
     1. Add the following line: `15 3 * * * ./certbot-auto renew --quiet`
 1. Install npm process manager: `sudo npm i -g pm2`
 1. Navigate to hellosign nodejs-demo folder and start app with pm2: `MONGO_USER=[mongo_user] MONGO_PASS=[mongo_password] MONGO_HOST=[mongo_host_url] HELLO_KEY=[hellosign_api_key] HELLO_ID=[hellosign_client_id] pm2 start main.js --name <INSERT PROCESS NAME HERE>`
-    1. You can update the environment variables using `--update-env` at the end of the pm2 call
-        1.`MONGO_USER=[mongo_user] MONGO_PASS=[mongo_password] MONGO_HOST=[mongo_host_url] HELLO_KEY=[hellosign_api_key] HELLO_ID=[hellosign_client_id] pm2 start main.js --update-env`
+    1. You can update the environment variables using `--update-env` at the end of the pm2 call, like this `MONGO_USER=[mongo_user] MONGO_PASS=[mongo_password] MONGO_HOST=[mongo_host_url] HELLO_KEY=[hellosign_api_key] HELLO_ID=[hellosign_client_id] pm2 start main.js --update-env`
     1. You can restart the app using `pm2 restart <PROCESS NAME>` and view streaming logs using `pm2 logs <PROCESS NAME>`
 
