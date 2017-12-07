@@ -10,19 +10,10 @@ Assuming that you will be deploying this on a clean AWS Fedora/Centos server ins
 1. Install node: `sudo yum install -y nodejs`
 1. Install node version manager: `sudo npm i -g n`
 1. Install nodejs: `sudo n 6.11.2`
-1. Set up mongodb:
-    1. If you're going to be using a local instance of mongodb install it using the instructions at the following link: https://tecadmin.net/install-mongodb-on-ubuntu/
-    1. For an mlab deployment of mongodb add in the following environment variables :
-        1. `MONGO_USER` - username for user created in mlab
-        1. `MONGO_PASS` - password for user
-        1. `MONGO_HOST` - this is everything after the @ symbol in the host address provided in mlab. For example, if the URL is,  `mongodb://<dbuser>:<dbpassword>@ds157723.mlab.com:57723/hellosign`, `MONGO_HOST` would be `ds157723.mlab.com:57723/hellosign`
-1. Set environment variables for Hellosign API
-    1. `HELLO_KEY` Hellosign API key
-    1. `HELLO_ID` Hellosign API app client ID
 1. Install g++: `sudo yum install gcc-c++`
 1. Install dependencies for color-thief package: `sudo yum install cairo cairo-devel cairomm-devel libjpeg-turbo-devel pango pango-devel pangomm pangomm-devel giflib-devel`
 1. Clone github repository: `git clone https://github.com/HelloFax/nodejs-demo.git`
-1. CD into the nodejs-demo folder and install node packages: `sudo npm i`
+1. CD into the nodejs-demo folder and install all node packages: `sudo npm i`
 1. Install nginx: `sudo yum install nginx`
 1. Configure nginx as reverse proxy:
     1. Create a configuration file `sudo vi \etc\nginx\sites-available\default\node-sales-demo.com`
@@ -67,8 +58,42 @@ Assuming that you will be deploying this on a clean AWS Fedora/Centos server ins
             }
        }
     ```
-    iii.
-    iii. Test nginx configuration with `sudo nginx -t` and restart nginx `sudo service nginx restart`
+1. Update the nginx.config file under /etc/nginx to include the new folders and file you just created. This will also disable the default server (you can see it's all commented out):
+  ``` 
+      # For more information on configuration, see:
+      # * Official English Documentation: http://nginx.org/en/docs/
+      # * Official Russian Documentation: http://nginx.org/ru/docs/
+      user nginx;
+      worker_processes auto;
+      error_log /var/log/nginx/error.log;
+      pid /var/run/nginx.pid;
+      # Load dynamic modules. See /usr/share/doc/nginx/README.dynamic.
+      include /usr/share/nginx/modules/*.conf;
+      events {
+           worker_connections 1024;
+      }
+      http {
+           log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+           '$status $body_bytes_sent "$http_referer" '
+           '"$http_user_agent" "$http_x_forwarded_for"';
+           access_log /var/log/nginx/access.log main;
+           sendfile on;
+           tcp_nopush on;
+           tcp_nodelay on;
+           keepalive_timeout 65;
+           types_hash_max_size 2048;
+           include /etc/nginx/mime.types;
+           default_type application/octet-stream;
+           # Load modular configuration files from the /etc/nginx/conf.d directory.
+           # See http://nginx.org/en/docs/ngx_core_module.html#include
+           # for more information.
+           include /etc/nginx/conf.d/*.conf;
+           include /etc/nginx/sites-available/default/*; # THIS IS WHERE YOU'RE ADDING YOUR FILE
+           index index.html index.htm;
+      }
+  ```
+1. Test nginx with `sudo nginx -t`
+1. Restart nginx `sudo service nginx restart`
 1. Install certbot and set up certificates:
     From ~ dir
     1. `sudo yum -y install yum-utils`
@@ -79,8 +104,13 @@ Assuming that you will be deploying this on a clean AWS Fedora/Centos server ins
 1. Setup automatic certificate renewal:
     1. `sudo crontab -e`
     1. Add the following line: `15 3 * * * ./certbot-auto renew --quiet`
+1. Set up mongodb:
+    1. If you're going to be using a local instance of mongodb install it using the instructions at the following link: https://tecadmin.net/install-mongodb-on-ubuntu/
+    1. For an mlab deployment of mongodb add in the following environment variables :
+        1. `MONGO_USER` - username for user created in mlab
+        1. `MONGO_PASS` - password for user
+        1. `MONGO_HOST` - this is everything after the @ symbol in the host address provided in mlab. For example, if the URL is,  `mongodb://<dbuser>:<dbpassword>@ds157723.mlab.com:57723/hellosign`, `MONGO_HOST` would be `ds157723.mlab.com:57723/hellosign`
 1. Install npm process manager: `sudo npm i -g pm2`
-1. Navigate to hellosign nodejs-demo folder and start app with pm2: `MONGO_USER=[mongo_user] MONGO_PASS=[mongo_password] MONGO_HOST=[mongo_host_url] HELLO_KEY=[hellosign_api_key] HELLO_ID=[hellosign_client_id] pm2 start main.js --name <INSERT PROCESS NAME HERE>`
-    1. You can update the environment variables using `--update-env` at the end of the pm2 call, like this `MONGO_USER=[mongo_user] MONGO_PASS=[mongo_password] MONGO_HOST=[mongo_host_url] HELLO_KEY=[hellosign_api_key] HELLO_ID=[hellosign_client_id] pm2 start main.js --update-env`
+1. Navigate to  ~/nodejs-demo folder and start the app with pm2: `MONGO_USER=[mongo_user] MONGO_PASS=[mongo_password] MONGO_HOST=[mongo_host_url] HELLO_KEY=[hellosign_api_key] HELLO_ID=[hellosign_client_id] pm2 start main.js --name <INSERT PROCESS NAME HERE>`
+    1. If you ever need to update the environment variables, use `--update-env` at the end of the pm2 call, like this `MONGO_USER=[mongo_user] MONGO_PASS=[mongo_password] MONGO_HOST=[mongo_host_url] HELLO_KEY=[hellosign_api_key] HELLO_ID=[hellosign_client_id] pm2 start main.js --update-env`
     1. You can restart the app using `pm2 restart <PROCESS NAME>` and view streaming logs using `pm2 logs <PROCESS NAME>`
-
