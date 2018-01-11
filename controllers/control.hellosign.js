@@ -16,7 +16,7 @@ module.exports = {
             data.ccroles = (data.ccroles).split(",")}
         else {
             data.ccroles = []};
-        
+
         if(data.roles) {
             data.roles = (data.roles).split(",")}
         else {
@@ -87,9 +87,6 @@ module.exports = {
 
         if(!data.files)
             data.files=['resources/docs/mutual-nda-with-date.pdf'];
-
-        if(!data.ccroles)
-            data.ccroles = [];
 
         var options = {
             test_mode: 1,
