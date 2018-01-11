@@ -15,22 +15,6 @@
         </div>
 
         <div class="form-group">
-            <label>Add the roles that need to sign</label>
-            <br/>
-            <label class="small-label">Who needs to sign?</label>
-            <input type="text" class="form-control roles" placeholder="Signing Role (Manager, Client, etc.)">
-            <div class="addRole">
-                                <span class="icon">
-                                    <span class="fa-stack">
-                                      <i class="fa fa-plus fa-stack-1x"></i>
-                                      <i class="fa fa-circle-thin fa-stack-2x"></i>
-                                    </span>
-                                </span>
-                <span class="text">Add Role</span>
-            </div>
-        </div>
-
-        <div class="form-group">
             <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject    "/>
         </div>
 
@@ -47,14 +31,6 @@
     </form>
     <script>
         Dropzone.autoDiscover = false;
-
-        $('.addRole').click(function(){
-            $('<div style="position:relative;"><input type="text" class="form-control roles" style="margin-top:10px;" placeholder="Signing Role (Manager, Client, etc.)"><div class="removeRole"><i class="fa fa-times"></i></div></div>').insertBefore($(this));
-            $('.removeRole').click(function(){
-                console.log('clicked');
-                $(this).parent().remove();
-            });
-        });
 
         $(document).ready(function(){
             var myDropzone = new Dropzone(".dropzone", {
