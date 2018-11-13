@@ -43,7 +43,19 @@ module.exports = {
             subject: data.subject,
             message: data.message,
             signer_roles: newroles,
-            cc_roles: data.ccroles
+            cc_roles: data.ccroles,
+            merge_fields: [
+                {name:'day',value:text},
+                {name:'month',value:text},
+                {name:'year',value:text},
+                {name:'employee_name',value:text},
+                {name:'position',value:text},
+                {name:'day_start',value:text},
+                {name:'month_start',value:text},
+                {name:'year_start',value:text},
+                {name:'checkbox1',value:checkbox},
+                {name:'checkbox2',value:checkbox},
+            ],
         };
 
         hellosign.template.createEmbeddedDraft(options)
